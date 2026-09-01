@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>618240 · เรียน Python — โครงสร้างข้อมูลและอัลกอริทึม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+
+<header class="topbar">
+  <button id="navToggle" class="icon-btn" aria-label="เปิด/ปิดเมนูบท" aria-expanded="false">☰</button>
+  <a class="brand" href="#/">
+    <span class="brand-logo">Py</span>
+    <span class="brand-text">
+      <strong>618240 · เรียน Python</strong>
+      <small>โครงสร้างข้อมูลและอัลกอริทึม</small>
+    </span>
+  </a>
+  <div class="topbar-right">
+    <span id="pyStatus" class="py-status" data-state="idle">Python: ยังไม่ได้โหลด</span>
+    <button id="themeToggle" class="icon-btn" aria-label="สลับธีมสว่าง/มืด">◐</button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav id="sidebar" class="sidebar" aria-label="รายการบทเรียน">
+    <div class="progress-box">
+      <div class="progress-label"><span>ความคืบหน้า</span><span id="progressText">0%</span></div>
+      <div class="progress-track"><div id="progressBar" class="progress-fill"></div></div>
+    </div>
+    <ul id="chapterList" class="chapter-list"></ul>
+    <div class="sidebar-foot">
+      <a class="side-link exam-link" href="#/exam">📝 สอบมิดเทอม</a>
+      <a class="side-link sub" href="#/exam/choice">ส่วนที่ 1 · ปรนัย</a>
+      <a class="side-link sub" href="#/exam/written">ส่วนที่ 2 · อัตนัย</a>
+      <a class="side-link" href="#/playground">🧪 Playground อิสระ</a>
+      <a class="side-link" href="#/cheatsheet">📋 สรุปคำสั่ง</a>
+    </div>
+  </nav>
+
+  <div id="scrim" class="scrim" hidden></div>
+
+  <main id="main" class="content" tabindex="-1"></main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="assets/lessons.js"></script>
+<script src="assets/exam.js"></script>
+<script src="assets/runner.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
