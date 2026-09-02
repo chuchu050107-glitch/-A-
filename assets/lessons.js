@@ -1,5 +1,7 @@
 /**
- * เนื้อหาบทเรียนทั้งหมด เรียบเรียงจากเอกสารบรรยายวิชา 618240
+ * เนื้อหาบทเรียนวิชา 618240
+ * บทที่ 4-7 โค้ดคัดจากเอกสารบรรยายของอาจารย์โดยตรง
+ * บทที่ 1-3 เรียบเรียงขึ้นเองให้ครอบคลุมหัวข้อเดียวกับบรรยาย 1-3
  * โค้ดตัวอย่างเขียนด้วย String.raw เพื่อให้ backslash ใน Python (เช่น \n) คงอยู่ตามเดิม
  *
  * โหลดเป็นสคริปต์ธรรมดา (ไม่ใช่ ES module) เพื่อให้เปิดไฟล์ index.html
@@ -995,58 +997,64 @@ print(topStudent("students.csv"))`,
     id: "sorting",
     no: 4,
     title: "อัลกอริทึมการเรียงลำดับข้อมูล",
-    summary: "Bubble Sort, Selection Sort, Insertion Sort และการเรียงข้อมูลแบบ record หลายคอลัมน์",
+    summary: "Bubble Sort, Selection Sort, Insertion Sort และการเรียงข้อมูลแบบ record ตามเอกสารบรรยาย 4",
     goals: [
-      "อธิบายและเขียนโปรแกรม Bubble Sort ได้",
-      "อธิบายและเขียนโปรแกรม Selection Sort ได้",
-      "อธิบายและเขียนโปรแกรม Insertion Sort ได้",
-      "นำอัลกอริทึมการเรียงไปใช้กับข้อมูลแบบ record ที่มีหลายคอลัมน์ได้",
+      "อธิบาย และใช้งานอัลกอริทึมการเรียงข้อมูลแบบ Bubble Sort ได้",
+      "อธิบาย และใช้งานอัลกอริทึมการเรียงข้อมูลแบบ Selection Sort ได้",
+      "อธิบาย และใช้งานอัลกอริทึมการเรียงข้อมูลแบบ Insertion Sort ได้",
+      "เรียงข้อมูลแบบ record โดยเลือกคอลัมน์ที่ใช้เป็นกุญแจได้",
     ],
     sections: [
       {
-        heading: "4.1 ทำไมต้องศึกษาการเรียงลำดับ",
+        heading: "4.1 ทำไมต้องศึกษาอัลกอริทึมการเรียงลำดับข้อมูล",
         body: `
-          <p>ในการประมวลผลข้อมูลเรามักเจอปัญหาที่ต้องเรียงลำดับ เช่น เรียงตามรหัส
-          เรียงมูลค่าสินค้า เรียงคะแนนสอบเข้ามหาวิทยาลัย</p>
-          <p>ข้อมูลที่ใช้เป็นหลักในการเรียงเรียกว่า <strong>กุญแจ (key)</strong>
-          เพราะข้อมูลหนึ่งชุดมักมีหลายส่วนที่เกี่ยวข้องกัน เช่น นักศึกษา 1 คนประกอบด้วย
-          ชื่อ นามสกุล คะแนนเฉลี่ย — ถ้าจะเรียงตามคะแนน คะแนนก็คือ key
-          และเมื่อย้าย key ข้อมูลอื่นในแถวเดียวกันต้องย้ายตามไปด้วย</p>
-          <p>ทั้ง 3 อัลกอริทึมในบทนี้ใช้ฟังก์ชันช่วยตัวเดียวกันคือ <code>swap</code></p>`,
+          <p>ในการประมวลผลข้อมูลเรามักพบปัญหา เช่น ต้องการเรียงลำดับข้อมูลตามรหัส
+          เรียงลำดับมูลค่าสินค้า หรือเรียงคะแนนสอบเข้ามหาวิทยาลัยของผู้สมัคร</p>
+          <p>ข้อมูลที่นำมาเรียงเรียกว่า <b>กุญแจ (key)</b> เนื่องจากข้อมูลหนึ่งชุดมักมีหลายส่วนเกี่ยวข้องกัน
+          เช่น นักศึกษา 1 คน ประกอบด้วยชื่อ นามสกุล คะแนนเฉลี่ย ข้อมูลผู้ปกครอง วิชาที่ลงทะเบียน
+          ข้อมูลหนึ่งแถวแบบนี้เรียกว่า <b>record (ระเบียน)</b> และเราเลือกคอลัมน์ไหนเป็นกุญแจก็ได้
+          แต่ต้องเชื่อมกุญแจกับข้อมูลเดิมของแถวนั้นไว้ด้วยเสมอ</p>
+          <div class="note">ทุกอัลกอริทึมในบทนี้ต้องใช้การสลับค่าสมาชิกใน list
+          อาจารย์แยกเป็นฟังก์ชัน <code>swap</code> ไว้ใช้ร่วมกัน</div>`,
         examples: [
           {
-            title: "ฟังก์ชัน swap สลับตำแหน่งสมาชิกใน list",
+            title: "ฟังก์ชัน swap ตามเอกสารบรรยาย",
             code: String.raw`def swap(a, i, j):
     tmp = a[i]
     a[i] = a[j]
     a[j] = tmp
     return a
 
-data = [8, 7, 2, 1]
-print("ก่อนสลับ:", data)
-swap(data, 0, 3)
-print("หลังสลับ:", data)
 
-# Python มีวิธีลัด เขียนได้ในบรรทัดเดียว
-data[0], data[3] = data[3], data[0]
-print("สลับกลับ:", data)`,
+if __name__ == '__main__':
+    data = [8, 7, 2, 1]
+    print("ก่อนสลับ :", data)
+    swap(data, 0, 3)
+    print("หลังสลับ :", data)`,
           },
         ],
       },
+
       {
         heading: "4.2 Bubble Sort",
         body: `
-          <p><strong>แนวคิด:</strong> เปรียบเทียบ key สองตัวที่ติดกัน ถ้าลำดับไม่ถูกต้องก็สลับกัน
-          ทำซ้ำไปเรื่อย ๆ ค่าที่น้อยที่สุดจะ “ลอย” ขึ้นไปด้านหน้าเหมือนฟองอากาศ</p>
-          <p><strong>ข้อดี:</strong> เขียนง่ายที่สุด &nbsp;·&nbsp; <strong>ข้อเสีย:</strong> ช้าที่สุด — O(n²)</p>`,
+          <p><b>แนวคิดพื้นฐาน</b> เปรียบเทียบกุญแจสองตัวที่ติดกัน แล้วสลับถ้าลำดับไม่ถูกต้อง
+          ข้อดีคือสร้างได้ง่ายแต่ทำงานช้า</p>
+          <div class="note warn">
+            <b>สังเกตให้ดี</b> โค้ดในเอกสารบรรยายวนตัวแปร <code>j</code> <b>ถอยหลัง</b>
+            จาก <code>N-1</code> ลงมาถึง <code>1</code> และเทียบ <code>a[j] &lt; a[j-1]</code>
+            จึงเป็นการดัน<b>ค่าน้อยขึ้นไปด้านหน้า</b> ไม่ใช่ดันค่ามากไปด้านท้ายแบบที่เห็นในตำราทั่วไป
+            เวลาไล่โค้ดตอนสอบต้องระวังจุดนี้
+          </div>`,
         examples: [
           {
-            title: "Bubble Sort",
+            title: "Bubble Sort Algorithm in Python",
             code: String.raw`def swap(a, i, j):
     tmp = a[i]
     a[i] = a[j]
     a[j] = tmp
     return a
+
 
 def bubbleSort(a, N):
     for i in range(N):
@@ -1055,54 +1063,64 @@ def bubbleSort(a, N):
                 a = swap(a, j, j - 1)
     return a
 
+
 if __name__ == '__main__':
     data = [8, 7, 2, 1]
     data_sorted = bubbleSort(data, len(data))
     print(data_sorted)`,
           },
           {
-            title: "Bubble Sort แบบแสดงทุกรอบ (ดูการทำงานทีละขั้น)",
-            code: String.raw`def bubbleSortVerbose(a):
-    N = len(a)
-    for i in range(N):
-        for j in range(N - 1, 0, -1):
-            if a[j] < a[j - 1]:
-                a[j], a[j - 1] = a[j - 1], a[j]
-        print("รอบ i =", i, "->", a)
-    return a
-
-data = [8, 4, 6, 9, 2, 3, 1]
-print("เริ่มต้น    ->", data)
-bubbleSortVerbose(data)
-print("ผลลัพธ์    ->", data)`,
-          },
-        ],
-      },
-      {
-        heading: "4.3 Selection Sort",
-        body: `
-          <p><strong>แนวคิด:</strong> รอบที่ 0 มองตั้งแต่ <code>a[0]</code> ไปทางขวา
-          หา key ที่เล็กที่สุด แล้วนำมาสลับกับ <code>a[0]</code>
-          จากนั้นเลื่อนไปที่ <code>a[1]</code> แล้วทำแบบเดิม ไปจนถึง <code>a[N-1]</code></p>
-          <p>ต่างจาก Bubble Sort ตรงที่ <strong>สลับเพียงรอบละ 1 ครั้ง</strong> จึงเร็วกว่าในทางปฏิบัติ
-          แม้จะเป็น O(n²) เหมือนกัน</p>`,
-        examples: [
-          {
-            title: "Selection Sort",
+            title: "ดูการทำงานทีละรอบของลูปนอก",
             code: String.raw`def swap(a, i, j):
     tmp = a[i]
     a[i] = a[j]
     a[j] = tmp
     return a
 
+
+def bubbleSortShow(a, N):
+    for i in range(N):
+        for j in range(N - 1, 0, -1):
+            if a[j] < a[j - 1]:
+                a = swap(a, j, j - 1)
+        print("จบรอบ i =", i, ":", a)
+    return a
+
+
+if __name__ == '__main__':
+    data = [5, 1, 4, 2]
+    bubbleSortShow(data, len(data))`,
+          },
+        ],
+      },
+
+      {
+        heading: "4.3 Selection Sort",
+        body: `
+          <p><b>แนวคิดพื้นฐาน</b> ในการทำงานแต่ละรอบ หาค่าที่เล็กที่สุด
+          แล้วนำมาสลับกับตำแหน่งที่เริ่มต้นในรอบนั้น ซึ่งเพิ่มขึ้นครั้งละ 1
+          ทำซ้ำไปเรื่อย ๆ ตั้งแต่แถวที่ 0 ถึงแถวที่ N−1</p>
+          <p>ข้อดีคือสร้างได้ง่าย ข้อเสียคือความเร็วในการทำงานประมาณ Bubble Sort
+          สังเกตว่าอาจารย์ตั้งชื่อตัวแปรที่เก็บ<b>ตำแหน่ง</b>ของค่าน้อยที่สุดว่า <code>min</code></p>`,
+        examples: [
+          {
+            title: "Selection Sort Algorithm in Python",
+            code: String.raw`def swap(a, i, j):
+    tmp = a[i]
+    a[i] = a[j]
+    a[j] = tmp
+    return a
+
+
 def selectionSort(a, N):
     for i in range(0, N - 1):
-        min_idx = i
+        min = i
         for j in range(i + 1, N):
-            if a[j] < a[min_idx]:
-                min_idx = j
-        swap(a, min_idx, i)
+            if a[j] < a[min]:
+                min = j
+        swap(a, min, i)
     return a
+
 
 if __name__ == '__main__':
     key = [8, 7, 2, 1]
@@ -1111,27 +1129,30 @@ if __name__ == '__main__':
           },
         ],
       },
+
       {
         heading: "4.4 Insertion Sort",
         body: `
-          <p><strong>แนวคิด:</strong> เหมือนการเรียงไพ่ที่ถือในมือ — หยิบไพ่จากโต๊ะมาทีละใบ
-          แล้วแทรกลงในตำแหน่งที่ถูกต้องของไพ่ที่เรียงไว้แล้วในมือ</p>
-          <p>ในแต่ละรอบ อาเรย์ถูกแบ่งเป็นสองส่วน: <strong>ส่วนซ้ายเรียงแล้ว</strong>
-          และส่วนขวายังไม่เรียง โดย <code>key = a[i]</code> คือไพ่ใบที่กำลังจะแทรก</p>
-          <p>Insertion Sort <strong>เร็วมากเมื่อข้อมูลเกือบเรียงอยู่แล้ว</strong> (กลายเป็น O(n))
-          จึงถูกใช้เป็นส่วนหนึ่งของอัลกอริทึมเรียงลำดับสมัยใหม่</p>`,
+          <p><b>แนวคิดพื้นฐาน</b> คล้ายกับการเรียงไพ่ที่ถือในมือ โดยเริ่มหยิบไพ่จากโต๊ะมาครั้งละใบ
+          แล้วนำมาใส่ในลำดับที่ถูกต้องในมือ แต่ละรอบอาเรย์จะถูกแบ่งเป็นสองส่วน
+          ส่วนซ้ายคือไพ่ที่เรียงแล้ว (sorted) ส่วนขวาคือที่ยังไม่เรียง (unsorted)</p>
+          <p>ตัวแปร <code>key</code> เก็บค่าที่กำลังจะหาตำแหน่งแทรก ต้องเก็บไว้ก่อน
+          เพราะระหว่างเลื่อนสมาชิกตัวอื่นไปทางขวา ช่องเดิมของมันจะถูกเขียนทับ</p>
+          <p><b>ข้อดี</b> ถ้ากุญแจถูกเรียงมาจนใกล้ถูกต้องแล้ว จำนวนครั้งการทำงานคือ N
+          <b>ข้อเสีย</b> ใน worst case และ average case เป็น N × N จึงไม่ดีกว่า Bubble และ Selection</p>`,
         examples: [
           {
-            title: "Insertion Sort",
+            title: "Insertion Sort in Python",
             code: String.raw`def insertionSort(a, n):
     for i in range(1, n):
         key = a[i]
         j = i - 1
         while j >= 0 and a[j] > key:
-            a[j + 1] = a[j]     # เลื่อนตัวที่มากกว่าไปทางขวา
+            a[j + 1] = a[j]
             j -= 1
-        a[j + 1] = key          # แทรก key ลงตำแหน่งที่ถูกต้อง
-    return a
+        # Insert key
+        a[j + 1] = key
+
 
 if __name__ == '__main__':
     key = [8, 7, 2, 1]
@@ -1139,73 +1160,104 @@ if __name__ == '__main__':
     print(key)`,
           },
           {
-            title: "เปรียบเทียบจำนวนครั้งที่ทำงานของทั้ง 3 อัลกอริทึม",
-            code: String.raw`import random
+            title: "เปรียบเทียบจำนวนรอบการทำงานของทั้งสามวิธี",
+            code: String.raw`def swap(a, i, j):
+    tmp = a[i]
+    a[i] = a[j]
+    a[j] = tmp
+    return a
 
-def bubbleCount(a):
-    a = a[:]
-    n = len(a)
-    ops = 0
-    for i in range(n):
-        for j in range(n - 1, 0, -1):
-            ops += 1
+
+def bubbleCount(a, N):
+    c = 0
+    for i in range(N):
+        for j in range(N - 1, 0, -1):
+            c += 1
             if a[j] < a[j - 1]:
-                a[j], a[j - 1] = a[j - 1], a[j]
-    return ops
+                a = swap(a, j, j - 1)
+    return c
 
-def selectionCount(a):
-    a = a[:]
-    n = len(a)
-    ops = 0
-    for i in range(0, n - 1):
-        m = i
-        for j in range(i + 1, n):
-            ops += 1
-            if a[j] < a[m]:
-                m = j
-        a[m], a[i] = a[i], a[m]
-    return ops
 
-def insertionCount(a):
-    a = a[:]
-    ops = 0
-    for i in range(1, len(a)):
+def selectionCount(a, N):
+    c = 0
+    for i in range(0, N - 1):
+        min = i
+        for j in range(i + 1, N):
+            c += 1
+            if a[j] < a[min]:
+                min = j
+        swap(a, min, i)
+    return c
+
+
+def insertionCount(a, n):
+    c = 0
+    for i in range(1, n):
         key = a[i]
         j = i - 1
         while j >= 0 and a[j] > key:
-            ops += 1
+            c += 1
             a[j + 1] = a[j]
             j -= 1
         a[j + 1] = key
-    return ops
+    return c
 
-random.seed(1)
-data = [random.randint(1, 100) for _ in range(30)]
 
-print("ข้อมูลสุ่ม 30 ตัว")
-print("Bubble    :", bubbleCount(data), "ครั้ง")
-print("Selection :", selectionCount(data), "ครั้ง")
-print("Insertion :", insertionCount(data), "ครั้ง")
+if __name__ == '__main__':
+    data = [5, 3, 8, 1, 9, 2, 7, 4]
+    print("Bubble    :", bubbleCount(list(data), len(data)), "รอบ")
+    print("Selection :", selectionCount(list(data), len(data)), "รอบ")
+    print("Insertion :", insertionCount(list(data), len(data)), "รอบ")
 
-print()
-print("ข้อมูลที่เรียงอยู่แล้ว 30 ตัว")
-sorted_data = sorted(data)
-print("Bubble    :", bubbleCount(sorted_data), "ครั้ง")
-print("Selection :", selectionCount(sorted_data), "ครั้ง")
-print("Insertion :", insertionCount(sorted_data), "ครั้ง  <- เร็วกว่ามาก")`,
+    sorted_data = [1, 2, 3, 4, 5, 6, 7, 8]
+    print()
+    print("ถ้าข้อมูลเรียงมาแล้ว")
+    print("Bubble    :", bubbleCount(list(sorted_data), len(sorted_data)), "รอบ")
+    print("Insertion :", insertionCount(list(sorted_data), len(sorted_data)), "รอบ")`,
           },
         ],
       },
+
       {
-        heading: "4.5 การเรียงข้อมูลแบบ Record",
+        heading: "4.5 การเรียงข้อมูลในรูปแบบ record",
         body: `
-          <p>ข้อมูลจริงมักเป็น <em>record</em> คือหนึ่งแถวมีหลายคอลัมน์ เก็บเป็น list ซ้อน list
-          เวลาเรียงต้องระบุว่าใช้คอลัมน์ไหนเป็น key และเมื่อย้าย ต้องย้ายทั้งแถวไปด้วยกัน</p>
-          <p>วิธีทำคือแก้ <code>insertionSort</code> ให้เทียบ <code>r[j][key_col]</code>
-          แทนที่จะเทียบ <code>a[j]</code> ตรง ๆ</p>`,
+          <p>ข้อมูลจริงมักเก็บเป็น record หรือหลายแถวประกอบกัน โดยแต่ละแถวมีหลายคอลัมน์
+          เช่น ข้อมูลผลการสอบของนักศึกษาที่ประกอบด้วย ชื่อ SSN Test1 Test2 Final</p>
+          <p>ถ้าคัดเฉพาะกุญแจออกมาเรียง ข้อมูลในแต่ละแถวจะ<b>ไม่ย้ายตาม</b>
+          จึงต้องแก้ฟังก์ชัน <code>insertionSort</code> ให้ย้ายทั้งแถว
+          โดยเทียบที่คอลัมน์ที่เลือกไว้ ได้เป็นฟังก์ชัน <code>insertionSortRec</code></p>`,
         examples: [
           {
-            title: "เรียง record ด้วยคอลัมน์ที่เลือก",
+            title: "คัดเฉพาะกุญแจมาเรียง — แถวไม่ย้ายตาม",
+            code: String.raw`def insertionSort(a, n):
+    for i in range(1, n):
+        key = a[i]
+        j = i - 1
+        while j >= 0 and a[j] > key:
+            a[j + 1] = a[j]
+            j -= 1
+        # Insert key
+        a[j + 1] = key
+
+
+if __name__ == '__main__':
+    data = [['Mark', "123-65-6789", 75, 78, 82],
+            ['Tim',  "123-65-5723", 67, 45, 74],
+            ['Amy',  "123-65-4542", 78, 65, 90],
+            ['Berk', "123-65-8278", 81, 74, 68]]
+    key_column = 4
+    key = []
+    for i in range(len(data)):
+        key.append(data[i][key_column])
+    insertionSort(key, len(key))
+    print(key)
+
+    print("แต่ข้อมูลเดิมยังไม่ถูกเรียง")
+    for row in data:
+        print(row)`,
+          },
+          {
+            title: "insertionSortRec — เรียง record ด้วยกุญแจที่เป็น column",
             code: String.raw`def insertionSortRec(r, n, key_col):
     for i in range(1, n):
         key_rec = r[i]
@@ -1213,42 +1265,48 @@ print("Insertion :", insertionCount(sorted_data), "ครั้ง  <- เร็
         while j >= 0 and r[j][key_col] > key_rec[key_col]:
             r[j + 1] = r[j]
             j -= 1
+        # Insert key
         r[j + 1] = key_rec
-    return r
+
 
 if __name__ == '__main__':
-    # [ชื่อ, SSN, Test1, Test2, Final]
     data = [['Mark', "123-65-6789", 75, 78, 82],
             ['Tim',  "123-65-5723", 67, 45, 74],
             ['Amy',  "123-65-4542", 78, 65, 90],
             ['Berk', "123-65-8278", 81, 74, 68]]
-
-    print("เรียงตามชื่อ (คอลัมน์ 0)")
-    insertionSortRec(data, len(data), 0)
-    for row in data:
-        print(row)
-
-    print()
-    print("เรียงตามคะแนน Final (คอลัมน์ 4)")
-    insertionSortRec(data, len(data), 4)
+    key_column = 4
+    insertionSortRec(data, len(data), key_column)
     for row in data:
         print(row)`,
           },
+        ],
+      },
+
+      {
+        heading: "4.6 การเรียง records ที่อ่านจากไฟล์ CSV",
+        body: `
+          <p>ข้อมูลนักศึกษาเก็บในไฟล์ CSV โดยแต่ละแถวประกอบด้วย 6 คอลัมน์
+          ใช้ฟังก์ชัน <code>readRecordToList()</code> อ่านไฟล์แล้วคืนค่าเป็น List ซ้อน List
+          จากนั้นส่งต่อให้ <code>insertionSortRec</code> เรียงตามคอลัมน์ที่ต้องการได้ทันที</p>
+          <div class="note"><code>next(infile)</code> คือการอ่านบรรทัดแรก (หัวตาราง) ทิ้งไป
+          ก่อนจะให้ <code>csv.reader</code> อ่านข้อมูลจริง</div>`,
+        examples: [
           {
-            title: "เรียง record ที่อ่านจากไฟล์ CSV",
+            title: "readRecordToList แล้วเรียงด้วยคอลัมน์ที่ 5",
+            files: { "grades_short.csv": GRADES_CSV },
             code: String.raw`import csv
 
+
 def readRecordToList(filename):
-    rows = []
-    with open(filename, "r", newline="") as file:
-        reader = csv.reader(file)
-        next(reader)                      # ข้ามบรรทัดหัวตาราง
-        for row in reader:
-            row[3] = int(row[3])          # แปลงคะแนนเป็นตัวเลข
-            row[4] = int(row[4])
-            row[5] = int(row[5])
-            rows.append(row)
-    return rows
+    infile = open(filename, 'r')
+    mylist = []
+    heading = next(infile)
+    csv_obj = csv.reader(infile)
+    for row in csv_obj:
+        mylist.append(row)
+    infile.close()
+    return mylist
+
 
 def insertionSortRec(r, n, key_col):
     for i in range(1, n):
@@ -1257,72 +1315,105 @@ def insertionSortRec(r, n, key_col):
         while j >= 0 and r[j][key_col] > key_rec[key_col]:
             r[j + 1] = r[j]
             j -= 1
+        # Insert key
         r[j + 1] = key_rec
-    return r
+
 
 if __name__ == '__main__':
-    data_list = readRecordToList("grades_short.csv")
-
-    print("ก่อนเรียง")
+    file_name = "grades_short.csv"
+    data_list = readRecordToList(file_name)
     for row in data_list:
         print(row)
-
-    key_column = 5                        # เรียงตามคะแนน Final
-    insertionSortRec(data_list, len(data_list), key_column)
-
     print()
-    print("หลังเรียงตามคะแนน Final")
+
+    key_column = 5
+    insertionSortRec(data_list, len(data_list), key_column)
     for row in data_list:
         print(row)`,
-            files: { "grades_short.csv": GRADES_CSV },
           },
         ],
       },
     ],
     exercises: [
       {
-        prompt: "แก้ bubbleSort ให้เรียงจากมากไปน้อย (จากเดิมน้อยไปมาก)",
-        starter: String.raw`def bubbleSort(a, N):
-    for i in range(N):
-        for j in range(N - 1, 0, -1):
-            if a[j] < a[j - 1]:      # <- แก้ตรงนี้
-                a[j], a[j - 1] = a[j - 1], a[j]
+        prompt: "แก้ bubbleSort ของอาจารย์ให้เรียงจากมากไปน้อย โดยแก้เงื่อนไขเปรียบเทียบจุดเดียว",
+        starter: String.raw`def swap(a, i, j):
+    tmp = a[i]
+    a[i] = a[j]
+    a[j] = tmp
     return a
 
-print(bubbleSort([8, 4, 6, 9, 2], 5))
-`,
-        solution: String.raw`def bubbleSort(a, N):
+
+def bubbleSortDesc(a, N):
     for i in range(N):
         for j in range(N - 1, 0, -1):
-            if a[j] > a[j - 1]:      # เปลี่ยน < เป็น >
-                a[j], a[j - 1] = a[j - 1], a[j]
+            # แก้เงื่อนไขบรรทัดถัดไปให้เรียงมากไปน้อย
+            if a[j] < a[j - 1]:
+                a = swap(a, j, j - 1)
     return a
 
-print(bubbleSort([8, 4, 6, 9, 2], 5))`,
+
+if __name__ == '__main__':
+    print(bubbleSortDesc([8, 7, 2, 1], 4))`,
+        solution: String.raw`def swap(a, i, j):
+    tmp = a[i]
+    a[i] = a[j]
+    a[j] = tmp
+    return a
+
+
+def bubbleSortDesc(a, N):
+    for i in range(N):
+        for j in range(N - 1, 0, -1):
+            if a[j] > a[j - 1]:      # กลับเครื่องหมายจาก < เป็น >
+                a = swap(a, j, j - 1)
+    return a
+
+
+if __name__ == '__main__':
+    print(bubbleSortDesc([8, 7, 2, 1], 4))`,
       },
       {
-        prompt: "เขียน selectionSort ที่เรียง list ของสตริงตามความยาวของคำ (คำสั้นอยู่หน้า)",
-        starter: String.raw`words = ["banana", "fig", "apple", "kiwi", "watermelon"]
+        prompt: "เขียน selectionSortRec(r, n, key_col) ที่เรียง record ตามคอลัมน์ที่ระบุ โดยดัดแปลงจาก selectionSort ของอาจารย์",
+        starter: String.raw`def swap(a, i, j):
+    tmp = a[i]
+    a[i] = a[j]
+    a[j] = tmp
+    return a
 
-def selectionSortByLen(a):
+
+def selectionSortRec(r, n, key_col):
     # เขียนโค้ดตรงนี้
+    pass
+
+
+if __name__ == '__main__':
+    data = [['Mark', 75], ['Tim', 92], ['Amy', 68], ['Berk', 88]]
+    selectionSortRec(data, len(data), 1)
+    for row in data:
+        print(row)`,
+        solution: String.raw`def swap(a, i, j):
+    tmp = a[i]
+    a[i] = a[j]
+    a[j] = tmp
     return a
 
-print(selectionSortByLen(words))
-`,
-        solution: String.raw`words = ["banana", "fig", "apple", "kiwi", "watermelon"]
 
-def selectionSortByLen(a):
-    n = len(a)
+def selectionSortRec(r, n, key_col):
     for i in range(0, n - 1):
-        m = i
+        min = i
         for j in range(i + 1, n):
-            if len(a[j]) < len(a[m]):
-                m = j
-        a[m], a[i] = a[i], a[m]
-    return a
+            if r[j][key_col] < r[min][key_col]:
+                min = j
+        swap(r, min, i)
+    return r
 
-print(selectionSortByLen(words))`,
+
+if __name__ == '__main__':
+    data = [['Mark', 75], ['Tim', 92], ['Amy', 68], ['Berk', 88]]
+    selectionSortRec(data, len(data), 1)
+    for row in data:
+        print(row)`,
       },
     ],
   },
@@ -1331,286 +1422,491 @@ print(selectionSortByLen(words))`,
   {
     id: "recursion",
     no: 5,
-    title: "ฟังก์ชันเรียกตัวเองและ Merge Sort",
-    summary: "Recursion, แนวคิด Divide and Conquer และอัลกอริทึม Merge Sort ที่เร็วกว่า O(n²)",
+    title: "Recursive functions และ Merge Sort",
+    summary: "ฟังก์ชันเรียกตัวเอง แนวคิด Divide and Conquer, Merge Sort และ Quick Sort ตามเอกสารบรรยาย 5",
     goals: [
-      "อธิบายการทำงานของฟังก์ชันเรียกตัวเอง (recursive function) ได้",
-      "แยกส่วน base case กับ recursive case ในฟังก์ชันเรียกตัวเองได้",
-      "อธิบายแนวคิด Divide and Conquer ได้",
-      "อธิบายและเขียนโปรแกรม Merge Sort ได้",
+      "อธิบายการทำงานของฟังก์ชันเรียกตัวเองได้",
+      "แยกแยะการทำงานตอน<b>เรียก</b> กับตอน<b>คืนค่า</b> ของฟังก์ชันเรียกตัวเองได้",
+      "อธิบาย และใช้งานอัลกอริทึมการเรียงข้อมูลแบบ Merge Sort ได้",
+      "เปรียบเทียบ Merge Sort กับ Quick Sort ได้",
     ],
     sections: [
       {
-        heading: "5.1 ฟังก์ชันเรียกตัวเอง (Recursive Function)",
+        heading: "5.1 ฟังก์ชันเรียกตัวเอง (Recursive function)",
         body: `
-          <p>เมื่อฟังก์ชันเรียกใช้งาน <em>ตัวเอง</em> เราเรียกว่าฟังก์ชันเรียกตัวเอง</p>
-          <p>ทุกฟังก์ชันเรียกตัวเองต้องมี 2 ส่วน</p>
-          <ol>
-            <li><strong>Base case</strong> — เงื่อนไขที่ทำให้ <em>หยุด</em> เรียกตัวเอง ถ้าไม่มีจะเรียกไม่รู้จบ</li>
-            <li><strong>Recursive case</strong> — เรียกตัวเองด้วยปัญหาที่ <em>เล็กลง</em> เข้าใกล้ base case</li>
-          </ol>`,
+          <p>เมื่อฟังก์ชันทำการเรียกใช้งานตัวเอง เราเรียกว่า <b>ฟังก์ชันเรียกตัวเอง</b>
+          ฟังก์ชัน <code>message</code> ต่อไปนี้เรียกตัวเองโดยส่งค่า <code>times</code> ที่ลดลงทีละ 1 ลงไป</p>
+          <p>ถ้าเรียก <code>message(3)</code> จะเรียกตัวเองทั้งหมด <b>4 ครั้ง</b> คือ times = 3, 2, 1 และ 0</p>`,
         examples: [
           {
-            title: "ตัวอย่างพื้นฐาน: เรียกตัวเอง 3 ครั้ง",
+            title: "ตัวอย่างพื้นฐาน — เรียกตัวเองจนกว่า times จะเป็น 0",
             code: String.raw`def message(times):
-    if times > 0:                     # base case: หยุดเมื่อ times = 0
-        print("message is called")
-        message(times - 1)            # เรียกตัวเองด้วยค่าที่เล็กลง
+    print("message is called, times = ", times)
+    if times > 0:
+        message(times - 1)
+
+
+if __name__ == '__main__':
+    message(3)`,
+          },
+        ],
+      },
+
+      {
+        heading: "5.2 การเรียก กับ การคืนค่า แสดงผลแยกกันอย่างไร",
+        body: `
+          <p>ถ้าเพิ่มคำสั่ง <code>print</code> อีกบรรทัด<b>หลัง</b>การเรียกตัวเอง
+          จะเห็นว่าโปรแกรมแสดงผลสองชุดแยกกัน</p>
+          <ul>
+            <li>บรรทัดที่อยู่<b>ก่อน</b>การเรียกตัวเอง ทำงานตอน<b>ขาไป</b> นับ 3 → 0</li>
+            <li>บรรทัดที่อยู่<b>หลัง</b>การเรียกตัวเอง ทำงานตอน<b>ขากลับ</b> คือหลังจากการเรียกที่ลึกที่สุดจบแล้ว
+            ลำดับจึงกลับด้านเป็น 0 → 3</li>
+          </ul>
+          <div class="note warn">ข้อนี้ออกสอบบ่อยที่สุดในบทนี้ ให้ไล่ทีละบรรทัดด้วยมือให้ชิน</div>`,
+        examples: [
+          {
+            title: "เห็นลำดับขาไปและขากลับของการเรียก",
+            code: String.raw`def message(times):
+    print("message is called, times = ", times)
+    if times > 0:
+        message(times - 1)
+    # -----
+    print("message return with ", times)
+
 
 if __name__ == '__main__':
     message(3)`,
           },
           {
-            title: "เห็นลำดับ “ขาไป” และ “ขากลับ” ของการเรียก",
+            title: "ลองเปลี่ยนเป็น message(1) เพื่อดูให้ชัด",
             code: String.raw`def message(times):
-    print("message is called, times =", times)
+    print("message is called, times = ", times)
     if times > 0:
         message(times - 1)
-    # ----- บรรทัดนี้ทำงานตอนขากลับ หลังจากการเรียกซ้อนคืนค่ากลับมาแล้ว
-    print("message return with", times)
+    print("message return with ", times)
+
 
 if __name__ == '__main__':
-    message(3)
-
-# สังเกตว่าขาไปนับ 3->0 แต่ขากลับนับ 0->3
-# เพราะการเรียกซ้อนต้องจบก่อน บรรทัดหลังจากนั้นจึงทำงาน`,
-          },
-          {
-            title: "ตัวอย่างคลาสสิก: factorial และ Fibonacci",
-            code: String.raw`def factorial(n):
-    if n <= 1:                 # base case
-        return 1
-    return n * factorial(n - 1)
-
-def fib(n):
-    if n < 2:                  # base case
-        return n
-    return fib(n - 1) + fib(n - 2)
-
-for i in range(1, 8):
-    print("{0}! = {1}".format(i, factorial(i)))
-
-print()
-print("Fibonacci:", [fib(i) for i in range(10)])`,
-          },
-          {
-            title: "ลืม base case → RecursionError",
-            code: String.raw`def broken(n):
-    print("n =", n)
-    broken(n - 1)      # ไม่มีเงื่อนไขหยุด
-
-broken(3)
-
-# Python จะหยุดให้เองเมื่อเรียกซ้อนลึกเกินขีดจำกัด แล้วโยน RecursionError`,
+    message(1)`,
           },
         ],
       },
+
       {
-        heading: "5.2 แนวคิด Divide and Conquer",
+        heading: "5.3 แนวคิดแบ่งแยกและเอาชนะ (Divide and Conquer)",
         body: `
-          <p>“แบ่งแยกและเอาชนะ” คือรูปแบบการออกแบบอัลกอริทึมที่ใช้ recursion มี 4 ขั้น</p>
           <ol>
-            <li><strong>Base case</strong> — ถ้าปัญหาเล็กพอแล้ว แก้ตรง ๆ ได้เลย</li>
-            <li><strong>Divide</strong> — แบ่งปัญหาเป็นปัญหาย่อยที่คล้ายกันและเล็กลง</li>
-            <li><strong>Conquer</strong> — แก้ปัญหาย่อยด้วยการเรียกตัวเอง</li>
-            <li><strong>Combine</strong> — รวมคำตอบของปัญหาย่อยเป็นคำตอบของปัญหาใหญ่</li>
-          </ol>`,
+            <li><b>Base Case</b> — solve the problem directly if it is small enough</li>
+            <li><b>Divide</b> — divide the problem into two or more similar and smaller subproblems</li>
+            <li><b>Recursively solve</b> the subproblems</li>
+            <li><b>Combine</b> solutions to the subproblems</li>
+          </ol>
+          <p>Merge Sort ใช้แนวคิดนี้โดยแบ่งปัญหาเป็นอย่างละครึ่งทุกรอบ แล้วใช้การเรียกตัวเอง</p>
+          <pre>MERGE-SORT A[0 . . N-1], Left, Right
+1. If N = 1, done.
+2. m = N/2
+3. Merge-Sort( A, Left, m )
+4. Merge-Sort( A, m + 1, Right )
+5. "Merge" the 2 sorted lists.</pre>`,
+        examples: [],
+      },
+
+      {
+        heading: "5.4 ฟังก์ชัน merge — รวมเลข 2 กองเข้าด้วยกัน",
+        body: `
+          <p>หัวใจของ Merge Sort คือการรวมข้อมูลที่เรียงแล้ว 2 ชุดเข้าด้วยกัน
+          โดยทั้งสองชุดอยู่ใน list <code>A</code> เดียวกัน แบ่งด้วยดัชนี</p>
+          <ul>
+            <li>ครึ่งแรก เริ่มจาก <code>p</code> ถึง <code>q</code></li>
+            <li>ครึ่งหลัง เริ่มจาก <code>q + 1</code> ถึง <code>r</code></li>
+          </ul>
+          <div class="note warn"><b>สำคัญมาก</b> ฟังก์ชัน <code>merge</code> ของอาจารย์
+          <b>เขียนผลลัพธ์กลับลงใน A ตัวเดิม</b> และ<b>ไม่คืนค่า</b> list ใหม่
+          ต่างจากตัวอย่าง merge ที่มักเห็นทั่วไปซึ่งรับ left, right แล้ว return list ใหม่</div>
+          <p>เวลาที่ใช้รวมข้อมูล n ตัวคือ Θ(n) หรือเป็นเชิงเส้น</p>`,
         examples: [
           {
-            title: "Binary Search — ตัวอย่าง Divide and Conquer ที่ง่ายที่สุด",
-            code: String.raw`def binarySearch(a, target, left, right):
-    if left > right:                       # 1. base case: หาไม่เจอ
-        return -1
-    mid = (left + right) // 2              # 2. divide: แบ่งครึ่ง
-    if a[mid] == target:
-        return mid
-    elif target < a[mid]:                  # 3. conquer: ค้นเฉพาะครึ่งที่เป็นไปได้
-        return binarySearch(a, target, left, mid - 1)
+            title: "merge(A, p, q, r) ตามเอกสารบรรยาย",
+            code: String.raw`def merge(A, p, q, r):
+    # If A is a list, slicing creates a copy.
+    if type(A) is list:
+        left = A[p: q+1]
+        right = A[q+1: r+1]
+    # Otherwise a is a np.array, so create a copy with list().
     else:
-        return binarySearch(a, target, mid + 1, right)
+        left = list(A[p: q+1])
+        right = list(A[q+1: r+1])
 
-data = [1, 3, 5, 7, 9, 11, 13, 15]
-for t in [7, 15, 4]:
-    pos = binarySearch(data, t, 0, len(data) - 1)
-    print("หา", t, "-> ตำแหน่ง", pos)`,
+    i = 0     # index into left sublist/subarray
+    j = 0     # index into right sublist/subarray
+    k = p     # index into a[p: r+1]
+
+    # Combine the two sorted sublists by inserting into A
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            A[k] = left[i]
+            i += 1
+        else:
+            A[k] = right[j]
+            j += 1
+        k += 1
+
+    # After going through the left or right sublist, copy the
+    # remainder of the other to the end of the list/array.
+    if i < len(left):     # copy remainder of left
+        A[k: r+1] = left[i:]
+    if j < len(right):    # copy remainder of right
+        A[k: r+1] = right[j:]
+
+
+if __name__ == '__main__':
+    A = [2, 3, 7, 8, 5, 6, 8, 9]
+    p = 0
+    q = 3
+    r = 7
+    merge(A, p, q, r)
+    print(A)`,
           },
         ],
       },
+
       {
-        heading: "5.3 Merge Sort",
+        heading: "5.5 Merge Sort เต็มรูปแบบ",
         body: `
-          <p>Merge Sort ใช้ Divide and Conquer เต็มรูปแบบ</p>
-          <pre style="background:var(--surface-2);padding:12px;border-radius:8px;overflow-x:auto;font-family:var(--mono);font-size:13px">MERGE-SORT A[0 .. N-1]
-1. ถ้า N = 1  ->  เสร็จแล้ว (base case)
-2. m = N / 2
-3. Merge-Sort( ครึ่งซ้าย )
-4. Merge-Sort( ครึ่งขวา )
-5. "Merge" รวม 2 ส่วนที่เรียงแล้วเข้าด้วยกัน</pre>
-          <p>หัวใจอยู่ที่ขั้นที่ 5 คือฟังก์ชัน <strong>merge</strong> ซึ่งรวม list ที่เรียงแล้ว 2 อัน
-          เข้าเป็นอันเดียวที่ยังเรียงอยู่ โดยเทียบหัวของทั้งสองฝั่งแล้วหยิบตัวที่น้อยกว่าออกมาก่อน</p>
-          <p class="note"><strong>ความเร็ว:</strong> Merge Sort เป็น <strong>O(n log n)</strong>
-          เร็วกว่า Bubble/Selection/Insertion (O(n²)) มากเมื่อข้อมูลเยอะ
-          — ข้อมูล 1,000 ตัว O(n²) ทำราว 1,000,000 ครั้ง แต่ O(n log n) ทำราว 10,000 ครั้ง</p>`,
+          <p><code>merge_sort</code> กำหนดค่าตั้งต้นให้ <code>p = 0</code> และ <code>r = None</code>
+          เมื่อเรียกครั้งแรกจึงเขียนแค่ <code>merge_sort(A)</code> ได้เลย
+          ถ้า <code>r</code> เป็น <code>None</code> ฟังก์ชันจะตั้งให้เป็น <code>len(A) - 1</code> ให้เอง</p>
+          <p>base case คือ <code>p >= r</code> ซึ่งหมายถึงเหลือสมาชิก 0 หรือ 1 ตัว ถือว่าเรียงแล้ว</p>`,
         examples: [
           {
-            title: "ฟังก์ชัน merge — รวม list ที่เรียงแล้ว 2 อัน",
-            code: String.raw`def merge(left, right):
-    result = []
+            title: "merge_sort(A, p=0, r=None) ตามเอกสารบรรยาย",
+            code: String.raw`def merge(A, p, q, r):
+    if type(A) is list:
+        left = A[p: q+1]
+        right = A[q+1: r+1]
+    else:
+        left = list(A[p: q+1])
+        right = list(A[q+1: r+1])
+
     i = 0
     j = 0
+    k = p
+
     while i < len(left) and j < len(right):
         if left[i] <= right[j]:
-            result.append(left[i])
+            A[k] = left[i]
             i += 1
         else:
-            result.append(right[j])
+            A[k] = right[j]
             j += 1
-    # ฝั่งที่ยังเหลือ ต่อท้ายได้เลยเพราะเรียงอยู่แล้ว
-    result += left[i:]
-    result += right[j:]
-    return result
+        k += 1
 
-a = [1, 9, 11, 12]
-b = [2, 7, 13, 20]
-print("ซ้าย :", a)
-print("ขวา  :", b)
-print("รวม  :", merge(a, b))`,
-          },
-          {
-            title: "Merge Sort เต็มรูปแบบ",
-            code: String.raw`def merge(left, right):
-    result = []
-    i = j = 0
-    while i < len(left) and j < len(right):
-        if left[i] <= right[j]:
-            result.append(left[i])
-            i += 1
-        else:
-            result.append(right[j])
-            j += 1
-    result += left[i:]
-    result += right[j:]
-    return result
+    if i < len(left):
+        A[k: r+1] = left[i:]
+    if j < len(right):
+        A[k: r+1] = right[j:]
 
-def mergeSort(a):
-    if len(a) <= 1:                  # base case
-        return a
-    mid = len(a) // 2                # divide
-    left = mergeSort(a[:mid])        # conquer
-    right = mergeSort(a[mid:])
-    return merge(left, right)        # combine
+
+def merge_sort(A, p=0, r=None):
+    """Sort the elements in the sublist/subarray a[p:r+1]."""
+    if r is None:
+        r = len(A) - 1
+    if p >= r:                 # 0 or 1 element?
+        return
+    q = (p + r) // 2           # midpoint of A[p: r]
+    merge_sort(A, p, q)        # recursively sort A[p: q]
+    merge_sort(A, q + 1, r)    # recursively sort A[q+1: r]
+    merge(A, p, q, r)          # merge A[p: q] and A[q+1: r] into A[p: r]
+
 
 if __name__ == '__main__':
-    data = [8, 3, 5, 1, 9, 2, 7, 4]
-    print("ก่อนเรียง:", data)
-    print("หลังเรียง:", mergeSort(data))`,
+    A = [8, 3, 2, 9, 7, 1, 5, 4]
+    merge_sort(A)
+    print(A)`,
           },
           {
             title: "ดูการแบ่งและการรวมทีละขั้น",
-            code: String.raw`def merge(left, right, depth):
-    result = []
-    i = j = 0
+            code: String.raw`def merge(A, p, q, r):
+    left = A[p: q+1]
+    right = A[q+1: r+1]
+    i = 0
+    j = 0
+    k = p
     while i < len(left) and j < len(right):
         if left[i] <= right[j]:
-            result.append(left[i]); i += 1
+            A[k] = left[i]
+            i += 1
         else:
-            result.append(right[j]); j += 1
-    result += left[i:]
-    result += right[j:]
-    print("  " * depth + "รวม {0} + {1} -> {2}".format(left, right, result))
-    return result
+            A[k] = right[j]
+            j += 1
+        k += 1
+    if i < len(left):
+        A[k: r+1] = left[i:]
+    if j < len(right):
+        A[k: r+1] = right[j:]
+    print("   รวม A[{0}..{1}] ได้ {2}".format(p, r, A[p:r+1]))
 
-def mergeSort(a, depth=0):
-    if len(a) <= 1:
-        return a
-    print("  " * depth + "แบ่ง " + str(a))
-    mid = len(a) // 2
-    left = mergeSort(a[:mid], depth + 1)
-    right = mergeSort(a[mid:], depth + 1)
-    return merge(left, right, depth)
 
-mergeSort([8, 3, 5, 1, 9, 2])`,
+def merge_sort(A, p=0, r=None, depth=0):
+    if r is None:
+        r = len(A) - 1
+    if p >= r:
+        return
+    q = (p + r) // 2
+    print("  " * depth + "แบ่ง A[{0}..{1}] ที่ q = {2}".format(p, r, q))
+    merge_sort(A, p, q, depth + 1)
+    merge_sort(A, q + 1, r, depth + 1)
+    merge(A, p, q, r)
+
+
+if __name__ == '__main__':
+    A = [8, 3, 2, 9, 7, 1, 5, 4]
+    merge_sort(A)
+    print()
+    print("ผลลัพธ์:", A)`,
           },
-          {
-            title: "วัดความเร็วจริง: Merge Sort เทียบ Bubble Sort",
-            code: String.raw`import random, time
+        ],
+      },
 
-def bubbleSort(a):
-    a = a[:]
-    n = len(a)
-    for i in range(n):
-        for j in range(n - 1, 0, -1):
-            if a[j] < a[j - 1]:
-                a[j], a[j - 1] = a[j - 1], a[j]
+      {
+        heading: "5.6 Quick Sort",
+        body: `
+          <p><b>1. แบ่งแยก (Divide)</b></p>
+          <ul>
+            <li>เลือกกุญแจ <code>p</code> เป็นจุดแบ่ง (pivot) เช่นตัวแรก</li>
+            <li>แบ่งกุญแจที่เหลือโดยใช้กุญแจ p ที่เลือกมา
+            ส่วนแรกประกอบด้วยกุญแจทั้งหมดที่<b>น้อยกว่า</b> p
+            ส่วนที่สองประกอบด้วยกุญแจทั้งหมดที่<b>มากกว่าหรือเท่ากับ</b> p</li>
+          </ul>
+          <p><b>2. เรียกตัวเอง</b> เรียงส่วนแรกและส่วนที่สอง
+          <b>3.</b> เมื่อเรียกตัวเองจนสุดแล้วทำการรวมทั้งสองส่วน
+          ในกรณีนี้การรวม<b>ไม่เสียเวลา</b>เหมือน merge sort</p>
+          <pre>Quick-Sort(A, left, right)
+  if left >= right  return
+  else
+      middle &lt;- Partition(A, left, right)
+      Quick-Sort(A, left, middle - 1)
+      Quick-Sort(A, middle + 1, right)
+  end if</pre>`,
+        examples: [
+          {
+            title: "Quick Sort เขียนเป็นภาษา Python",
+            code: String.raw`def partition(A, left, right):
+    pivot = A[left]
+    i = left + 1
+    for j in range(left + 1, right + 1):
+        if A[j] < pivot:
+            A[i], A[j] = A[j], A[i]
+            i += 1
+    A[left], A[i - 1] = A[i - 1], A[left]
+    return i - 1
+
+
+def quickSort(A, left=0, right=None):
+    if right is None:
+        right = len(A) - 1
+    if left >= right:
+        return
+    middle = partition(A, left, right)
+    quickSort(A, left, middle - 1)
+    quickSort(A, middle + 1, right)
+
+
+if __name__ == '__main__':
+    A = [8, 3, 2, 9, 7, 1, 5, 4]
+    quickSort(A)
+    print(A)`,
+          },
+        ],
+      },
+
+      {
+        heading: "5.7 เปรียบเทียบ Merge Sort กับ Quick Sort",
+        body: `
+          <table class="tbl">
+            <tr><th>หัวข้อ</th><th>Merge Sort</th><th>Quick Sort</th></tr>
+            <tr><td>งานส่วนใหญ่อยู่ที่</td><td>ตอน merge</td><td>ตอน partition</td></tr>
+            <tr><td>การแบ่งข้อมูล</td><td>ครึ่งพอดี n/2</td><td>สัดส่วนใดก็ได้ ไม่จำเป็นต้องครึ่ง</td></tr>
+            <tr><td>Average case</td><td>n log n</td><td>n log n</td></tr>
+            <tr><td>Worst case</td><td>O(n log n)</td><td>O(n²)</td></tr>
+            <tr><td>หน่วยความจำเพิ่ม</td><td>More (not in-place)</td><td>Less (in-place)</td></tr>
+            <tr><td>Stability</td><td>Stable</td><td>Not stable</td></tr>
+            <tr><td>เหมาะกับ</td><td>Linked Lists</td><td>Arrays</td></tr>
+            <tr><td>ขนาดข้อมูล</td><td>ทำงานดีกับทุกขนาด</td><td>ทำงานดีกับข้อมูลขนาดเล็ก</td></tr>
+          </table>
+          <p><b>Stable vs Unstable Sorting</b> พิจารณาจากการจัดการตัวเลขที่เหมือนกัน
+          Stable Sort คือลำดับของตัวเลขที่เหมือนกันยังคงเหมือนเดิม
+          ตัวที่อยู่ลำดับสูงกว่าก่อนเรียง จะยังอยู่สูงกว่าหลังเรียง</p>
+          <p>ทั้ง Merge Sort และ Quick Sort มีประสิทธิภาพดีกว่า Insertion Sort</p>`,
+        examples: [
+          {
+            title: "วัดความเร็วจริง — Merge Sort เทียบ Bubble Sort",
+            code: String.raw`import random
+import time
+
+
+def swap(a, i, j):
+    tmp = a[i]
+    a[i] = a[j]
+    a[j] = tmp
     return a
 
-def merge(left, right):
-    result = []
-    i = j = 0
+
+def bubbleSort(a, N):
+    for i in range(N):
+        for j in range(N - 1, 0, -1):
+            if a[j] < a[j - 1]:
+                a = swap(a, j, j - 1)
+    return a
+
+
+def merge(A, p, q, r):
+    left = A[p: q+1]
+    right = A[q+1: r+1]
+    i = 0
+    j = 0
+    k = p
     while i < len(left) and j < len(right):
         if left[i] <= right[j]:
-            result.append(left[i]); i += 1
+            A[k] = left[i]
+            i += 1
         else:
-            result.append(right[j]); j += 1
-    result += left[i:]
-    result += right[j:]
-    return result
+            A[k] = right[j]
+            j += 1
+        k += 1
+    if i < len(left):
+        A[k: r+1] = left[i:]
+    if j < len(right):
+        A[k: r+1] = right[j:]
 
-def mergeSort(a):
-    if len(a) <= 1:
-        return a
-    mid = len(a) // 2
-    return merge(mergeSort(a[:mid]), mergeSort(a[mid:]))
 
-random.seed(7)
-data = [random.randint(1, 10000) for _ in range(1200)]
+def merge_sort(A, p=0, r=None):
+    if r is None:
+        r = len(A) - 1
+    if p >= r:
+        return
+    q = (p + r) // 2
+    merge_sort(A, p, q)
+    merge_sort(A, q + 1, r)
+    merge(A, p, q, r)
 
-t0 = time.time()
-r1 = bubbleSort(data)
-t1 = time.time()
-r2 = mergeSort(data)
-t2 = time.time()
 
-print("ข้อมูล", len(data), "ตัว")
-print("Bubble Sort : {0:.3f} วินาที".format(t1 - t0))
-print("Merge Sort  : {0:.3f} วินาที".format(t2 - t1))
-print("ผลลัพธ์ตรงกัน:", r1 == r2)`,
+if __name__ == '__main__':
+    random.seed(1)
+    data = [random.randint(0, 9999) for _ in range(600)]
+
+    a1 = list(data)
+    t0 = time.time()
+    bubbleSort(a1, len(a1))
+    t_bubble = time.time() - t0
+
+    a2 = list(data)
+    t0 = time.time()
+    merge_sort(a2)
+    t_merge = time.time() - t0
+
+    print("ข้อมูล", len(data), "ตัว")
+    print("Bubble Sort : {0:.4f} วินาที".format(t_bubble))
+    print("Merge Sort  : {0:.4f} วินาที".format(t_merge))
+    print("ผลลัพธ์ตรงกัน :", a1 == a2)`,
           },
         ],
       },
     ],
     exercises: [
       {
-        prompt: "เขียนฟังก์ชันเรียกตัวเอง sumTo(n) ที่คืนผลรวม 1 + 2 + ... + n",
+        prompt: "เขียนฟังก์ชันเรียกตัวเอง sumTo(n) ที่คืนผลรวม 1 + 2 + ... + n โดยไม่ใช้ลูป",
         starter: String.raw`def sumTo(n):
-    # base case กับ recursive case
+    # base case แล้วเรียกตัวเองด้วยค่าที่เล็กลง
     pass
 
-print(sumTo(5))    # ควรได้ 15
-print(sumTo(100))  # ควรได้ 5050
-`,
+
+if __name__ == '__main__':
+    print(sumTo(5))
+    print(sumTo(100))`,
         solution: String.raw`def sumTo(n):
-    if n <= 0:
+    if n == 0:
         return 0
     return n + sumTo(n - 1)
 
-print(sumTo(5))
-print(sumTo(100))`,
+
+if __name__ == '__main__':
+    print(sumTo(5))
+    print(sumTo(100))`,
       },
       {
-        prompt: "เขียนฟังก์ชันเรียกตัวเอง reverse(s) ที่กลับด้านสตริง เช่น 'THAI' → 'IAHT'",
-        starter: String.raw`def reverse(s):
-    # ใบ้: สตริงว่างคือ base case  และ s[0] คือตัวแรก  s[1:] คือที่เหลือ
-    pass
+        prompt: "ดัดแปลง merge ของอาจารย์ให้เรียงจากมากไปน้อย โดยแก้เงื่อนไขเปรียบเทียบจุดเดียว (โครง merge_sort ไม่ต้องแก้)",
+        starter: String.raw`def merge(A, p, q, r):
+    left = A[p: q+1]
+    right = A[q+1: r+1]
+    i = 0
+    j = 0
+    k = p
+    while i < len(left) and j < len(right):
+        # แก้บรรทัดถัดไปให้เรียงจากมากไปน้อย
+        if left[i] <= right[j]:
+            A[k] = left[i]
+            i += 1
+        else:
+            A[k] = right[j]
+            j += 1
+        k += 1
+    if i < len(left):
+        A[k: r+1] = left[i:]
+    if j < len(right):
+        A[k: r+1] = right[j:]
 
-print(reverse("THAI"))
-`,
-        solution: String.raw`def reverse(s):
-    if len(s) == 0:
-        return ""
-    return reverse(s[1:]) + s[0]
 
-print(reverse("THAI"))`,
+def merge_sort(A, p=0, r=None):
+    if r is None:
+        r = len(A) - 1
+    if p >= r:
+        return
+    q = (p + r) // 2
+    merge_sort(A, p, q)
+    merge_sort(A, q + 1, r)
+    merge(A, p, q, r)
+
+
+if __name__ == '__main__':
+    A = [8, 3, 2, 9, 7, 1, 5, 4]
+    merge_sort(A)
+    print(A)`,
+        solution: String.raw`def merge(A, p, q, r):
+    left = A[p: q+1]
+    right = A[q+1: r+1]
+    i = 0
+    j = 0
+    k = p
+    while i < len(left) and j < len(right):
+        if left[i] >= right[j]:      # กลับเครื่องหมายจาก <= เป็น >=
+            A[k] = left[i]
+            i += 1
+        else:
+            A[k] = right[j]
+            j += 1
+        k += 1
+    if i < len(left):
+        A[k: r+1] = left[i:]
+    if j < len(right):
+        A[k: r+1] = right[j:]
+
+
+def merge_sort(A, p=0, r=None):
+    if r is None:
+        r = len(A) - 1
+    if p >= r:
+        return
+    q = (p + r) // 2
+    merge_sort(A, p, q)
+    merge_sort(A, q + 1, r)
+    merge(A, p, q, r)
+
+
+if __name__ == '__main__':
+    A = [8, 3, 2, 9, 7, 1, 5, 4]
+    merge_sort(A)
+    print(A)`,
       },
     ],
   },
@@ -1619,85 +1915,87 @@ print(reverse("THAI"))`,
   {
     id: "class-stack",
     no: 6,
-    title: "คลาส วัตถุ ADT และ Stack",
-    summary: "การเขียนโปรแกรมเชิงวัตถุ, constructor, แนวคิด Abstract Data Type และโครงสร้างข้อมูล Stack",
+    title: "Class and Objects, ADT และ Stack",
+    summary: "คลาสและวัตถุ constructor ข้อมูลเชิงนามธรรม (ADT) และโครงสร้างข้อมูล Stack ตามเอกสารบรรยาย 6",
     goals: [
-      "อธิบายแนวคิดของคลาสและวัตถุได้",
-      "สร้างคลาสพร้อม constructor และเมท็อดได้",
-      "อธิบายแนวคิด Abstract Data Type (ADT) ได้",
-      "อธิบายและสร้างโครงสร้างข้อมูล Stack พร้อมนำไปประยุกต์ใช้ได้",
+      "อธิบายแนวคิดของคลาส และวัตถุได้",
+      "ใช้งานคลาส และวัตถุ เพื่อสร้างโครงสร้างข้อมูลพื้นฐานได้",
+      "อธิบาย และใช้งานโครงสร้างข้อมูลแบบ Stack ได้",
     ],
     sections: [
       {
-        heading: "6.1 แนวคิดของคลาสและวัตถุ",
+        heading: "6.1 คลาส และวัตถุ (Class and Objects)",
         body: `
-          <p>การเขียนโปรแกรมเชิงวัตถุ (Object Oriented Programming) ต่างจากการเขียนแบบ
-          Procedural (เช่นภาษา C ที่เรียนใน Com. Pro. ปี 1) ตรงที่เน้นใช้ <em>วัตถุ</em> ในการแก้ปัญหา
-          โดยฟังก์ชันจะย้ายเข้าไปอยู่ภายในวัตถุ</p>
-          <ul>
-            <li><strong>คลาส (class)</strong> คือแบบหรือแม่พิมพ์ — เหมือน “แบบแปลนบ้าน”</li>
-            <li><strong>วัตถุ (object)</strong> คือของจริงที่สร้างจากคลาส — เหมือน “บ้านที่สร้างเสร็จ”
-            เรียกอีกอย่างว่า <em>instance</em></li>
-          </ul>
-          <p><code>class = ข้อมูล (ตัวแปร) + เมท็อด (ฟังก์ชัน)</code></p>
-          <p class="note"><strong><code>self</code> คืออะไร:</strong> ต้องเป็นพารามิเตอร์ตัวแรกเสมอ
-          ของทุกเมท็อดในคลาส ใช้ระบุ “วัตถุตัวปัจจุบันที่กำลังทำงานอยู่” เทียบได้กับ
-          <code>this</code> ในภาษา Java — และการอ่านตัวแปรในคลาสต้องใช้ <code>self.</code> เสมอ</p>`,
+          <p><b>คลาส</b> คือแบบหรือแม่พิมพ์ของวัตถุ หรือชนิดข้อมูลใหม่
+          <b>วัตถุ (object)</b> สร้างมาจากคลาส คือตัวแปรที่เรากำหนดเองที่สร้างจากคลาส
+          อาจเรียกว่าเป็น <b>instance</b></p>
+          <p class="note">การออกแบบ class = ข้อมูล (ตัวแปร) + เมท็อด (ฟังก์ชัน)<br>
+          วัตถุหรืออ็อบเจกต์ = ข้อมูล (ตัวแปร) + พฤติกรรม (ฟังก์ชัน)</p>
+          <p><code>self</code> ต้องเป็นค่าพารามิเตอร์<b>ตัวแรกเสมอ</b>ในการประกาศฟังก์ชันในคลาส
+          เป็นการระบุวัตถุตัวปัจจุบันที่กำลังทำงานอยู่ เหมือน <code>this</code> ในภาษา Java
+          และการอ่านตัวแปรหรือ field ในคลาสต้องใช้ <code>self</code> เสมอ</p>
+          <p>การเรียกใช้งานเมท็อดในวัตถุทำได้ 2 วิธี คือ
+          <code>object.method(parameters)</code> และ <code>Class.method(object, parameters)</code></p>`,
         examples: [
           {
-            title: "คลาสแรก",
+            title: "ตัวอย่าง 1-2 — คลาส birds และการเรียกเมท็อด 2 วิธี",
             code: String.raw`class birds():
     name = 'eagle'
 
     def fly(self):
         if self.name == 'eagle':
-            print("I am an", self.name, "and I can fly")
+            print("I am an ", self.name, " and I can fly")
+
 
 if __name__ == '__main__':
-    eagle = birds()     # สร้างวัตถุจากคลาส
-    eagle.fly()         # เรียกใช้เมท็อดของวัตถุ`,
+    eagle = birds()
+    eagle.fly()
+    #
+    birds.fly(eagle)`,
           },
           {
-            title: "คลาส house ที่มีตัวแปรและหลายเมท็อด",
+            title: "ตัวอย่าง 3-4 — คลาส house ที่มีตัวแปรและหลายเมท็อด",
             code: String.raw`class house():
     w = 0.0
     h = 0.0
-    result = 0.0
+    area = 0.0
 
-    def calc(self):
-        self.result = self.w * self.h
+    def area(self):
+        self.area = self.w * self.h
 
     def set(self, x, y):
         self.w = x
         self.h = y
 
     def show(self):
-        print("Area is", self.result)
+        print("Area is ", self.area)
+
 
 if __name__ == '__main__':
     h1 = house()
     h1.set(2.5, 3.0)
-    h1.calc()
+    h1.area()
     h1.show()
-
-    # สร้างวัตถุอีกตัวจากคลาสเดิม แยกข้อมูลกันคนละชุด
+    #
     h2 = house()
-    h2.set(10.0, 4.0)
-    h2.calc()
+    h2.set(1.0, 2.0)
+    h2.area()
     h2.show()`,
           },
         ],
       },
+
       {
-        heading: "6.2 Constructor",
+        heading: "6.2 Constructor และ __str__",
         body: `
-          <p>Constructor คือเมท็อดที่ใช้ <strong>ตั้งค่าเริ่มต้น</strong> ของวัตถุ
-          ถูกเรียกใช้ครั้งเดียวอัตโนมัติตอนสร้างวัตถุจากคลาส สร้างด้วยชื่อสงวน
-          <code>def __init__(self, ...)</code></p>
-          <p>ตัวแปรที่ต้องการ <em>ปกปิด</em> ไม่ให้แก้จากภายนอกโดยตรง นิยมขึ้นต้นด้วย <code>_</code></p>`,
+          <p><b>Constructor</b> คือเมท็อดที่มีไว้สำหรับตั้งค่าเริ่มต้นของวัตถุที่สร้างจากคลาส
+          โดยจะถูกเรียกใช้<b>ครั้งเดียว</b>เมื่อมีการสร้างวัตถุจากคลาส
+          สร้างด้วยคำสงวน <code>def __init__( ... )</code></p>
+          <p>ตัวแปรปกปิดขึ้นต้นด้วย <code>_</code> เช่น <code>self._w</code></p>
+          <p>เมท็อด <code>__str__</code> จะถูกเรียกใช้เมื่อใช้คำสั่ง <code>print</code> กับวัตถุนั้น</p>`,
         examples: [
           {
-            title: "คลาสที่มี constructor",
+            title: "ตัวอย่าง 7 — คลาส house ที่มี constructor",
             code: String.raw`class house():
     def __init__(self, x, y):
         self._w = x
@@ -1705,69 +2003,250 @@ if __name__ == '__main__':
 
     def area(self):
         area = self._w * self._h
-        print("Area is", area)
+        print("Area is ", area)
+
 
 if __name__ == '__main__':
-    h1 = house(2.5, 3.0)     # __init__ ถูกเรียกอัตโนมัติตรงนี้
-    h1.area()
-
-    h2 = house(6.0, 7.0)
-    h2.area()`,
+    #
+    h1 = house(2.5, 3.0)
+    #
+    h1.area()`,
           },
           {
-            title: "เพิ่ม __str__ เพื่อกำหนดวิธีแสดงผลของวัตถุ",
-            code: String.raw`class Student():
-    def __init__(self, sid, name, score):
-        self._id = sid
-        self._name = name
-        self._score = score
+            title: "คลาส rectangle ที่เพิ่มส่วนแสดงผล __str__",
+            code: String.raw`class rectangle():
+    def __init__(self, x, y):
+        self._x = x
+        self._y = y
 
-    def getScore(self):
-        return self._score
+    def calArea(self):
+        print("Area is ", self._x * self._y)
 
     def __str__(self):
-        return "[{0}] {1} = {2}".format(self._id, self._name, self._score)
+        s = "Width: " + str(self._x) \
+            + "\nHeight: " + str(self._y)
+        return s
+
 
 if __name__ == '__main__':
-    s1 = Student("65-1", "Mark", 82)
-    s2 = Student("65-2", "Amy", 90)
-
-    print(s1)             # print เรียก __str__ ให้อัตโนมัติ
-    print(s2)
-    print("คะแนนรวม =", s1.getScore() + s2.getScore())`,
+    r1 = rectangle(2.0, 3.0)
+    print(r1)
+    r1.calArea()`,
           },
         ],
       },
+
       {
         heading: "6.3 ข้อมูลเชิงนามธรรม (Abstract Data Type)",
         body: `
-          <p>คำว่า <em>abstract</em> หมายถึงการ <strong>ซ่อนรายละเอียดภายใน</strong>
-          ดังนั้น ADT คือการสร้างชนิดข้อมูลขึ้นมาใหม่เพื่อเก็บและใช้งานในรูปแบบที่เรากำหนด
-          โดยผู้ใช้ไม่จำเป็นต้องรู้ว่าข้างในทำงานอย่างไร</p>
-          <p style="text-align:center"><code>ADT = properties + operations</code><br>
-          <small>ตัวบอกลักษณะ + การกระทำ</small></p>
-          <p>ในภาษาเชิงวัตถุอย่าง Python หรือ Java เราใช้ <code>class</code> สร้าง ADT
-          เพราะ <code>class = ตัวแปรของวัตถุ + เมท็อด</code> ตรงกับนิยามพอดี</p>
-          <p>ตัวอย่าง: ตอนใช้ <code>list</code> ของ Python เราแค่เรียก <code>append()</code>
-          โดยไม่ต้องรู้ว่าข้างในจัดการหน่วยความจำอย่างไร — นั่นคือ ADT ที่ทำงานได้ดี</p>`,
+          <p>รากศัพท์ของคำว่า abstract หมายถึงการซ่อนรายละเอียดที่สำคัญ
+          ดังนั้น <b>ADT</b> คือการสร้างชนิดข้อมูลขึ้นเพื่อเก็บข้อมูลและใช้งานในรูปแบบที่เรากำหนด
+          โดยที่ผู้ใช้<b>ไม่จำเป็นต้องเข้าใจรายละเอียดภายใน</b>ก่อนที่จะใช้งานได้</p>
+          <p class="note"><b>ADT = properties + operations</b> (ตัวบอกลักษณะ + การกระทำ)<br>
+          <b>class = ตัวแปรของวัตถุ + เมท็อด</b></p>
+          <p><b>ขั้นตอนการสร้างโครงสร้างข้อมูลใหม่ด้วยแนวคิด ADT โดยใช้ class</b></p>
+          <ol>
+            <li>ออกแบบคลาส ตั้งชื่อโครงสร้างข้อมูลโดยประกาศ <code>class</code>
+            ซึ่งประกอบด้วยตัวแปรและเมท็อดที่ทำงานกับข้อมูลภายใน class</li>
+            <li>สร้างวัตถุ (object) หรือ instance จากโครงสร้าง class ที่ประกาศไว้ในข้อ 1
+            ในรูปแบบ <code>obj = class_name( … )</code></li>
+            <li>เรียกใช้งานเมท็อดที่ประกาศภายใน class โดยอ้างอิงจากวัตถุที่สร้างจากข้อ 2
+            ในรูปแบบ <code>&lt;ชื่อวัตถุ&gt;.&lt;เมท็อด&gt;</code></li>
+          </ol>`,
+        examples: [],
       },
+
       {
         heading: "6.4 โครงสร้างข้อมูล Stack",
         body: `
-          <p>Stack คือโครงสร้างข้อมูลแบบ <em>push down</em> — ใส่ข้อมูลจากด้านบนไปเรื่อย ๆ
-          และเวลาเอาออกต้องเอาออกจากด้านบนเสมอ เหมือนกองจานที่วางซ้อนกัน</p>
-          <p>เรียกว่าโครงสร้างแบบ <strong>First In Last Out (FILO)</strong>
-          หรือ Last In First Out (LIFO) ก็ได้</p>
-          <table class="tbl">
-            <tr><th>การกระทำ</th><th>ความหมาย</th></tr>
-            <tr><td><code>push(item)</code></td><td>ใส่ข้อมูลลงด้านบนสุด แล้วเลื่อนตัวชี้ <code>top</code> ขึ้น</td></tr>
-            <tr><td><code>pop()</code></td><td>เอาข้อมูลบนสุดออก แล้วเลื่อนตัวชี้ <code>top</code> ลง</td></tr>
-            <tr><td><code>isFull()</code></td><td>ตรวจว่า stack เต็มหรือยัง</td></tr>
-            <tr><td><code>isEmpty()</code></td><td>ตรวจว่า stack ว่างหรือไม่ (<code>top == -1</code>)</td></tr>
-          </table>`,
+          <p>Stack เป็นโครงสร้างข้อมูลแบบ <b>push down</b> คือการใส่ก้อนข้อมูลจากด้านบนไปเรื่อย ๆ
+          และการนำก้อนข้อมูลออกต้องเอาออกจากด้านบนเสมอ
+          เรียกได้ว่าเป็นโครงสร้างข้อมูลแบบ <b>First In Last Out (FILO)</b></p>
+          <ul>
+            <li><b>push</b> คือการใส่ก้อนข้อมูลลงใน stack ทางด้านบน แล้วปรับตัวชี้ <code>top</code>
+            ให้ชี้ก้อนข้อมูลบนสุด</li>
+            <li><b>pop</b> คือการนำก้อนข้อมูลที่ <code>top</code> ชี้ออกจาก stack
+            แล้วปรับตัวชี้ให้ชี้ก้อนที่อยู่ล่างลงไป</li>
+          </ul>
+          <div class="note warn"><b>อย่าลืม</b> เมท็อด <code>push</code> ในเอกสารบรรยาย
+          พิมพ์ข้อความ <code>"Pushed element: "</code> ออกมาทุกครั้งที่ใส่ข้อมูลสำเร็จด้วย
+          ถ้าโจทย์ถามผลการรัน ต้องนับบรรทัดเหล่านี้ด้วย</div>`,
         examples: [
           {
-            title: "คลาส Stack เต็มรูปแบบ",
+            title: "6.3.4 คลาส Stack สร้างด้วย LIST เต็มรูปแบบ",
+            code: String.raw`class Stack:
+    def __init__(self, size):
+        self._top = -1
+        self._data = [None] * size
+        self._size = size
+
+    def isFull(self):
+        if (self._top + 1) == self._size:
+            return True
+        else:
+            return False
+
+    def push(self, item):
+        if self.isFull() == True:
+            print("Stack is full : ", item)
+        else:
+            self._top += 1
+            self._data[self._top] = item
+            print("Pushed element: ", item)
+            # print("top: ", self._top)
+
+    def isEmpty(self):
+        if self._top == -1:
+            return True
+        else:
+            return False
+
+    def pop(self):
+        # print("data: ", self._data)
+        if (self.isEmpty() == False):
+            item = self._data[self._top]
+            self._top -= 1
+            return item
+        else:
+            print("Stack is empty")
+            return -1
+
+
+if __name__ == '__main__':
+    s1 = Stack(3)
+    s1.push(5)
+    s1.push(6)
+    s1.push(1)
+    s1.push(4)
+    d = s1.pop()
+    print("poped: ", d)
+    d = s1.pop()
+    print("poped: ", d)
+    d = s1.pop()
+    print("poped: ", d)
+    d = s1.pop()`,
+          },
+          {
+            title: "ตัวอย่างที่ Stack ขนาด 2 — ค่าที่เกินถูกปฏิเสธ",
+            code: String.raw`class Stack:
+    def __init__(self, size):
+        self._top = -1
+        self._data = [None] * size
+        self._size = size
+
+    def isFull(self):
+        if (self._top + 1) == self._size:
+            return True
+        else:
+            return False
+
+    def push(self, item):
+        if self.isFull() == True:
+            print("Stack is full : ", item)
+        else:
+            self._top += 1
+            self._data[self._top] = item
+            print("Pushed element: ", item)
+
+    def isEmpty(self):
+        if self._top == -1:
+            return True
+        else:
+            return False
+
+    def pop(self):
+        if (self.isEmpty() == False):
+            item = self._data[self._top]
+            self._top -= 1
+            return item
+        else:
+            print("Stack is empty")
+            return -1
+
+
+if __name__ == '__main__':
+    s1 = Stack(2)
+    s1.push(5)
+    s1.push(6)
+    s1.push(1)
+    item = s1.pop()
+    print("item =", item)`,
+          },
+        ],
+      },
+
+      {
+        heading: "6.5 การประยุกต์ใช้งาน Stack",
+        body: `
+          <ul>
+            <li>ใช้จดจำย้อนกลับ (Backtracking) เช่น การทำ undo ในโปรแกรมทั่วไป</li>
+            <li>ใช้งานใน compiler สำหรับการส่งค่าไปยังการเรียกโปรแกรมย่อย</li>
+            <li>ใช้งานสำหรับการคำนวณพจน์คณิตศาสตร์ เช่น <code>(1 + 2) * 3</code></li>
+            <li>ใช้เรียงลำดับอักษรหรือคำย้อนกลับ เช่น <b>THAI</b> เป็น <b>IAHT</b></li>
+          </ul>
+          <p><b>การคำนวณพจน์คณิตศาสตร์ด้วย Stack 2 อัน</b></p>
+          <ol>
+            <li>ใส่ตัวเลขลงไปใน Stack สำหรับตัวเลข (Operand Stack)</li>
+            <li>ใส่ operator ลงใน Stack สำหรับ operator (Operator Stack)</li>
+            <li>ถ้าเจอ <code>(</code> ไม่ต้องทำอะไร</li>
+            <li>ถ้าเจอ <code>)</code> ให้ pop สองค่าจาก operand stack และ pop operator มา 1 ตัว</li>
+            <li>เมื่อคำนวณได้แล้วให้ push ผลลัพธ์การคำนวณกลับไปใน Operand Stack</li>
+          </ol>
+          <p>ตัวอย่าง <code>( (4 + 2 ) * 3 )</code> จะได้คำตอบเป็น <b>18</b></p>`,
+        examples: [
+          {
+            title: "ใช้ Stack กลับลำดับตัวอักษร THAI → IAHT",
+            code: String.raw`class Stack:
+    def __init__(self, size):
+        self._top = -1
+        self._data = [None] * size
+        self._size = size
+
+    def isFull(self):
+        if (self._top + 1) == self._size:
+            return True
+        else:
+            return False
+
+    def push(self, item):
+        if self.isFull() == True:
+            print("Stack is full : ", item)
+        else:
+            self._top += 1
+            self._data[self._top] = item
+
+    def isEmpty(self):
+        if self._top == -1:
+            return True
+        else:
+            return False
+
+    def pop(self):
+        if (self.isEmpty() == False):
+            item = self._data[self._top]
+            self._top -= 1
+            return item
+        else:
+            print("Stack is empty")
+            return -1
+
+
+def reverse(text):
+    s = Stack(len(text))
+    for ch in text:
+        s.push(ch)
+    result = ""
+    while not s.isEmpty():
+        result += s.pop()
+    return result
+
+
+if __name__ == '__main__':
+    print(reverse("THAI"))
+    print(reverse("Silpakorn"))`,
+          },
+          {
+            title: "คำนวณพจน์คณิตศาสตร์ด้วย Stack 2 อัน",
             code: String.raw`class Stack:
     def __init__(self, size):
         self._top = -1
@@ -1782,11 +2261,10 @@ if __name__ == '__main__':
 
     def push(self, item):
         if self.isFull():
-            print("Stack is full :", item)
+            print("Stack is full : ", item)
         else:
             self._top += 1
             self._data[self._top] = item
-            print("Pushed element:", item)
 
     def pop(self):
         if not self.isEmpty():
@@ -1797,29 +2275,81 @@ if __name__ == '__main__':
             print("Stack is empty")
             return -1
 
-    def peek(self):
-        if self.isEmpty():
-            return None
-        return self._data[self._top]
+
+def calculate(expr):
+    operand = Stack(len(expr))
+    operator = Stack(len(expr))
+
+    for ch in expr:
+        if ch == ' ' or ch == '(':
+            continue
+        elif ch.isdigit():
+            operand.push(int(ch))
+        elif ch in "+-*/":
+            operator.push(ch)
+        elif ch == ')':
+            b = operand.pop()
+            a = operand.pop()
+            op = operator.pop()
+            if op == '+':
+                r = a + b
+            elif op == '-':
+                r = a - b
+            elif op == '*':
+                r = a * b
+            else:
+                r = a / b
+            print("คำนวณ", a, op, b, "=", r)
+            operand.push(r)
+
+    return operand.pop()
+
 
 if __name__ == '__main__':
-    s1 = Stack(3)
-    s1.push(5)
-    s1.push(6)
-    s1.push(1)
-    s1.push(4)              # เต็มแล้ว ใส่ไม่ได้
-
-    print("บนสุดคือ", s1.peek())
-    print()
-
-    print("poped:", s1.pop())
-    print("poped:", s1.pop())
-    print("poped:", s1.pop())
-    s1.pop()                # ว่างแล้ว`,
+    print("คำตอบ =", calculate("( (4 + 2 ) * 3 )"))`,
           },
-          {
-            title: "ตัวอย่างการทำงานทีละขั้นตามสไลด์",
-            code: String.raw`class Stack:
+        ],
+      },
+    ],
+    exercises: [
+      {
+        prompt: "สร้างคลาส circle ที่มี constructor รับรัศมี มีเมท็อด calArea() แสดงพื้นที่ และ __str__ ที่คืนข้อความ Radius: r",
+        starter: String.raw`class circle():
+    def __init__(self, r):
+        # เขียนโค้ดตรงนี้
+        pass
+
+    def calArea(self):
+        pass
+
+    def __str__(self):
+        pass
+
+
+if __name__ == '__main__':
+    c1 = circle(2.0)
+    print(c1)
+    c1.calArea()`,
+        solution: String.raw`class circle():
+    def __init__(self, r):
+        self._r = r
+
+    def calArea(self):
+        print("Area is ", 3.14159 * self._r * self._r)
+
+    def __str__(self):
+        s = "Radius: " + str(self._r)
+        return s
+
+
+if __name__ == '__main__':
+    c1 = circle(2.0)
+    print(c1)
+    c1.calArea()`,
+      },
+      {
+        prompt: "ใช้คลาส Stack ของอาจารย์ตรวจสอบว่าวงเล็บในข้อความสมดุลหรือไม่ เช่น '((a+b)*c)' สมดุล แต่ '((a+b)' ไม่สมดุล",
+        starter: String.raw`class Stack:
     def __init__(self, size):
         self._top = -1
         self._data = [None] * size
@@ -1833,169 +2363,73 @@ if __name__ == '__main__':
 
     def push(self, item):
         if self.isFull():
-            print("เต็ม ใส่", item, "ไม่ได้")
-            return
-        self._top += 1
-        self._data[self._top] = item
-
-    def pop(self):
-        if self.isEmpty():
-            return None
-        item = self._data[self._top]
-        self._top -= 1
-        return item
-
-    def peek(self):
-        return None if self.isEmpty() else self._data[self._top]
-
-s = Stack(5)
-print("ขั้น 1 push green"); s.push("green")
-print("ขั้น 2 push blue");  s.push("blue")
-print("ขั้น 3 pop ได้", s.pop())
-print("ขั้น 4 push red");   s.push("red")
-print("ขั้น 5 บนสุดคือ", s.peek())
-print("ขั้น 6 pop ได้", s.pop())
-print("ขั้น 7 pop ได้", s.pop())
-print("ว่างหรือยัง:", s.isEmpty())`,
-          },
-        ],
-      },
-      {
-        heading: "6.5 การประยุกต์ใช้งาน Stack",
-        body: `
-          <ul>
-            <li><strong>จดจำย้อนกลับ (Backtracking)</strong> — เช่นการทำ undo ในโปรแกรมทั่วไป</li>
-            <li>ใช้ใน compiler สำหรับการส่งค่าไปยังโปรแกรมย่อย (นี่คือเหตุผลที่ recursion ลึกเกินแล้วพัง)</li>
-            <li>ใช้คำนวณพจน์คณิตศาสตร์ เช่น <code>((4 + 2) * 3)</code></li>
-            <li>ใช้กลับลำดับตัวอักษร เช่น <code>THAI</code> เป็น <code>IAHT</code></li>
-          </ul>
-          <p><strong>ขั้นตอนการคำนวณนิพจน์ด้วย Stack 2 อัน</strong></p>
-          <ol>
-            <li>เจอตัวเลข → push ลง operand stack</li>
-            <li>เจอ operator → push ลง operator stack</li>
-            <li>เจอ <code>(</code> → ไม่ต้องทำอะไร</li>
-            <li>เจอ <code>)</code> → pop ตัวเลข 2 ตัวจาก operand stack และ operator 1 ตัว แล้วคำนวณ</li>
-            <li>push ผลลัพธ์กลับลง operand stack</li>
-          </ol>`,
-        examples: [
-          {
-            title: "กลับลำดับตัวอักษรด้วย Stack",
-            code: String.raw`class Stack:
-    def __init__(self):
-        self._data = []
-
-    def push(self, item):
-        self._data.append(item)
-
-    def pop(self):
-        if self.isEmpty():
-            return None
-        return self._data.pop()
-
-    def isEmpty(self):
-        return len(self._data) == 0
-
-def reverse(text):
-    s = Stack()
-    for ch in text:
-        s.push(ch)
-    result = ""
-    while not s.isEmpty():
-        result += s.pop()
-    return result
-
-print(reverse("THAI"))
-print(reverse("Silpakorn"))`,
-          },
-          {
-            title: "คำนวณนิพจน์คณิตศาสตร์ด้วย Stack 2 อัน",
-            code: String.raw`def evaluate(expr):
-    operands = []
-    operators = []
-
-    for token in expr.split():
-        if token == '(':
-            pass                                # ขั้น 3: ไม่ต้องทำอะไร
-        elif token in ('+', '-', '*', '/'):
-            operators.append(token)             # ขั้น 2
-        elif token == ')':
-            b = operands.pop()                  # ขั้น 4
-            a = operands.pop()
-            op = operators.pop()
-            if op == '+':
-                r = a + b
-            elif op == '-':
-                r = a - b
-            elif op == '*':
-                r = a * b
-            else:
-                r = a / b
-            print("  คำนวณ {0} {1} {2} = {3}".format(a, op, b, r))
-            operands.append(r)                  # ขั้น 5
+            print("Stack is full : ", item)
         else:
-            operands.append(float(token))       # ขั้น 1
+            self._top += 1
+            self._data[self._top] = item
 
-    return operands.pop()
+    def pop(self):
+        if not self.isEmpty():
+            item = self._data[self._top]
+            self._top -= 1
+            return item
+        else:
+            return -1
 
-expr = "( ( 4 + 2 ) * 3 )"
-print("นิพจน์:", expr)
-print("คำตอบ =", evaluate(expr))`,
-          },
-        ],
-      },
-    ],
-    exercises: [
-      {
-        prompt: "สร้างคลาส Rectangle ที่มี constructor รับความกว้างและความสูง มีเมท็อด area() และ perimeter()",
-        starter: String.raw`class Rectangle:
+
+def balanced(text):
     # เขียนโค้ดตรงนี้
     pass
 
-r = Rectangle(4, 6)
-print("พื้นที่ =", r.area())
-print("เส้นรอบรูป =", r.perimeter())
-`,
-        solution: String.raw`class Rectangle:
-    def __init__(self, w, h):
-        self._w = w
-        self._h = h
 
-    def area(self):
-        return self._w * self._h
+if __name__ == '__main__':
+    print(balanced("((a+b)*c)"))
+    print(balanced("((a+b)"))
+    print(balanced(")("))`,
+        solution: String.raw`class Stack:
+    def __init__(self, size):
+        self._top = -1
+        self._data = [None] * size
+        self._size = size
 
-    def perimeter(self):
-        return 2 * (self._w + self._h)
+    def isFull(self):
+        return (self._top + 1) == self._size
 
-r = Rectangle(4, 6)
-print("พื้นที่ =", r.area())
-print("เส้นรอบรูป =", r.perimeter())`,
-      },
-      {
-        prompt: "ใช้ Stack ตรวจสอบว่าวงเล็บในข้อความสมดุลหรือไม่ เช่น '((a+b)*c)' สมดุล แต่ '((a+b)' ไม่สมดุล",
-        starter: String.raw`def isBalanced(text):
-    stack = []
-    # เจอ ( ให้ push, เจอ ) ให้ pop
-    # ถ้าจะ pop ตอน stack ว่าง หรือจบแล้ว stack ยังไม่ว่าง = ไม่สมดุล
-    return False
+    def isEmpty(self):
+        return self._top == -1
 
-print(isBalanced("((a+b)*c)"))   # True
-print(isBalanced("((a+b)"))      # False
-print(isBalanced("a+b)("))       # False
-`,
-        solution: String.raw`def isBalanced(text):
-    stack = []
+    def push(self, item):
+        if self.isFull():
+            print("Stack is full : ", item)
+        else:
+            self._top += 1
+            self._data[self._top] = item
+
+    def pop(self):
+        if not self.isEmpty():
+            item = self._data[self._top]
+            self._top -= 1
+            return item
+        else:
+            return -1
+
+
+def balanced(text):
+    s = Stack(len(text))
     for ch in text:
-        if ch == '(':
-            stack.append(ch)
-        elif ch == ')':
-            if len(stack) == 0:
-                return False
-            stack.pop()
-    return len(stack) == 0
+        if ch == "(":
+            s.push(ch)
+        elif ch == ")":
+            if s.isEmpty():
+                return False      # เจอวงเล็บปิดเกิน
+            s.pop()
+    return s.isEmpty()            # จบแล้วต้องว่างพอดี
 
-print(isBalanced("((a+b)*c)"))
-print(isBalanced("((a+b)"))
-print(isBalanced("a+b)("))`,
+
+if __name__ == '__main__':
+    print(balanced("((a+b)*c)"))
+    print(balanced("((a+b)"))
+    print(balanced(")("))`,
       },
     ],
   },
@@ -2004,37 +2438,47 @@ print(isBalanced("a+b)("))`,
   {
     id: "linked-list",
     no: 7,
-    title: "Linked List และ Queue",
-    summary: "Singly Linked List, การเพิ่ม/ลบโหนด, Queue ด้วย deque และแนวคิด Doubly Linked List",
+    title: "LinkedList และ Queue",
+    summary: "Singly Linked List, การใส่และนำโหนดออก, Queue จาก deque, Circular และ Doubly Linked List ตามเอกสารบรรยาย 7",
     goals: [
-      "อธิบายแนวคิดและองค์ประกอบของ Linked List ได้",
-      "เขียนโปรแกรมสร้าง Singly Linked List พร้อมเพิ่มและลบโหนดได้",
-      "อธิบายและสร้างโครงสร้างข้อมูล Queue ได้",
-      "อธิบายความต่างระหว่าง Singly, Circular และ Doubly Linked List ได้",
+      "อธิบายแนวคิดของโครงสร้างข้อมูล Linked List ได้",
+      "เขียนโปรแกรมสร้างโครงสร้างข้อมูล Linked List ได้",
+      "สร้าง Queue จาก <code>collections.deque</code> ได้",
     ],
     sections: [
       {
-        heading: "7.1 แนวคิดของ Linked List",
+        heading: "7.1 แนวคิดของ Singly Linked List",
         body: `
-          <p>แนวคิดพื้นฐานคือออกแบบข้อมูลให้เป็น <strong>ก้อน (node)</strong> ที่เชื่อมต่อกันไปเรื่อย ๆ
-          โดยมีจุดเริ่มต้นและสิ้นสุด เพิ่มหรือลบก้อนได้ผ่านฟังก์ชันที่เราสร้างขึ้น</p>
-          <p><strong>ข้อดีเหนือกว่าอาเรย์:</strong></p>
-          <ul>
-            <li>โตหรือลดขนาดได้ <em>ขณะโปรแกรมกำลังทำงาน</em></li>
-            <li>โปรแกรมไม่จำเป็นต้องรู้จำนวนโหนดล่วงหน้า</li>
-          </ul>
-          <p><strong>องค์ประกอบของ 1 โหนด:</strong> ส่วนข้อมูล (<code>data</code>)
-          และตัวชี้ (<code>next</code>) ซึ่งชี้ไปยังก้อนถัดไป</p>
-          <p>Linked List ต้องมีตัวชี้ไปยังโหนดแรกเรียกว่า <strong>head</strong>
-          และส่วนใหญ่ควรมีตัวชี้ไปโหนดสุดท้ายเรียกว่า <strong>tail</strong>
-          โดยตัว <code>next</code> ของโหนดสุดท้ายต้องชี้ไปที่ <code>None</code></p>
-          <pre style="background:var(--surface-2);padding:12px;border-radius:8px;overflow-x:auto;font-family:var(--mono);font-size:13px">head                         tail
- |                            |
- v                            v
-[Mark|•]--->[Ed|•]--->[Ty|None]</pre>`,
+          <p>แนวคิดพื้นฐานคือการออกแบบโครงสร้างข้อมูลให้เป็นก้อนหรือ <b>node</b>
+          ที่มีการเชื่อมต่อกันไปเรื่อย ๆ โดยมีจุดเริ่มต้นและสิ้นสุด</p>
+          <p><b>ข้อดีเหนือการเก็บข้อมูลแบบอาเรย์</b> คือ Linked List สามารถโตหรือลดขนาดลงได้
+          ขณะที่โปรแกรมกำลังทำงาน โดยที่ตัวโปรแกรมไม่จำเป็นต้องรู้จำนวนโหนดตลอดเวลา</p>
+          <p>หนึ่งโหนดประกอบด้วย<b>ส่วนข้อมูล</b> และ<b>ตัวชี้ (next)</b> ซึ่งชี้ไปยังก้อนข้อมูลถัดไป
+          Linked List จำเป็นต้องมีตัวชี้ไปยังโหนดเริ่มต้น และส่วนใหญ่ควรมีตัวชี้ไปยังก้อนสุดท้ายด้วย
+          โดยที่ตัวท้ายต้องชี้ไปยัง null ซึ่งใน Python คือ <code>None</code></p>`,
         examples: [
           {
-            title: "7.1 สร้างโหนดเดียว",
+            title: "ตัวอย่างที่ 7.1 — สร้าง Singly linked list ที่ประกอบด้วย 1 โหนด",
+            code: String.raw`class Node():
+    def __init__(self, datum):
+        self.__data = datum
+        self.__next = None
+
+    def getData(self):
+        return self.__data
+
+    def __str__(self):
+        return str(self.__data)
+
+
+if __name__ == '__main__':
+    a = [1, "Happy"]
+    one_list = Node(a)
+    b = one_list.getData()
+    print("data is ", b)`,
+          },
+          {
+            title: "ตัวอย่างที่ 7.2 — เชื่อม 2 โหนดเข้าด้วยกัน",
             code: String.raw`class Node():
     def __init__(self, datum):
         self.data = datum
@@ -2046,79 +2490,18 @@ print(isBalanced("a+b)("))`,
     def __str__(self):
         return str(self.data)
 
-if __name__ == '__main__':
-    a = [1, "Happy"]
-    one_node = Node(a)
-    b = one_node.getData()
-    print("data is", b)
-    print("next ชี้ไปที่", one_node.next)`,
-          },
-          {
-            title: "7.2 เชื่อม 2 โหนดเข้าด้วยกัน",
-            code: String.raw`class Node():
-    def __init__(self, datum):
-        self.data = datum
-        self.next = None
-
-    def __str__(self):
-        return str(self.data)
 
 if __name__ == '__main__':
     d1 = ["65-1", "Mark"]
     d2 = ["65-2", "Ed"]
-
     head = Node(d1)
     node_2 = Node(d2)
-    head.next = node_2          # เชื่อมด้วยตัวอ้างอิง next
-
+    head.next = node_2
     print(head)
     print(head.next)`,
           },
           {
-            title: "7.3 เชื่อม 3 โหนดแล้ววิ่งไปทีละก้อน",
-            code: String.raw`class Node():
-    def __init__(self, datum):
-        self.data = datum
-        self.next = None
-
-    def __str__(self):
-        return str(self.data)
-
-if __name__ == '__main__':
-    head = Node(["65-1", "Mark"])
-    node_2 = Node(["65-2", "Ed"])
-    head.next = node_2
-
-    curr = head.next
-    curr.next = Node(["65-3", "Ty"])
-
-    # วิ่งจาก head ไปเรื่อย ๆ จนกว่า next จะเป็น None
-    curr = head
-    while curr != None:
-        print(curr)
-        curr = curr.next`,
-          },
-        ],
-      },
-      {
-        heading: "7.2 การใส่โหนดที่ด้านท้าย (insertAtTail)",
-        body: `
-          <p><strong>อัลกอริทึม</strong></p>
-          <pre style="background:var(--surface-2);padding:12px;border-radius:8px;overflow-x:auto;font-family:var(--mono);font-size:13px">สร้างก้อนข้อมูลใหม่ new_node
-
-ถ้า linked list ว่าง (tail == None):
-    กรณีที่ 1 — ยังไม่มีก้อนใด ๆ
-    head และ tail ชี้ที่ new_node ทั้งคู่
-มิฉะนั้น:
-    กรณีที่ 2 — มีก้อนอยู่แล้ว
-    tail.next = new_node
-    tail = new_node</pre>
-          <p>เมท็อด <code>__str__</code> ของ LinkedList ใช้วิธี <em>วิ่งไปทีละก้อน</em> (traverse)
-          โดยเริ่มที่ <code>head</code> แล้วเลื่อนด้วย <code>curr = curr.next</code>
-          จนกว่าจะเจอ <code>None</code></p>`,
-        examples: [
-          {
-            title: "7.4 คลาส LinkedList ที่ใส่โหนดด้านท้ายได้",
+            title: "ตัวอย่างที่ 7.3 — เชื่อม 3 โหนดแล้ววิ่งไปทีละก้อน",
             code: String.raw`class Node():
     def __init__(self, datum):
         self.data = datum
@@ -2129,6 +2512,53 @@ if __name__ == '__main__':
 
     def __str__(self):
         return str(self.data)
+
+
+if __name__ == '__main__':
+    d1 = ["65-1", "Mark"]
+    d2 = ["65-2", "Ed"]
+    head = Node(d1)
+    node_2 = Node(d2)
+    head.next = node_2
+    curr = head.next
+    curr.next = Node(["65-3", "Ty"])
+
+    curr = head
+    print(curr)
+    curr = curr.next
+    print(curr)
+    curr = curr.next
+    print(curr)`,
+          },
+        ],
+      },
+
+      {
+        heading: "7.2 การใส่โหนดที่ด้านท้าย (insertAtTail)",
+        body: `
+          <p><b>อัลกอริทึม</b> สร้างก้อนข้อมูลใหม่ <code>new_node</code> แล้วตรวจว่า Linked List ว่างหรือไม่</p>
+          <ul>
+            <li><b>กรณีที่ 1</b> ไม่มีก้อนข้อมูลใด ๆ ให้ตัวชี้ทั้ง <code>head</code> และ <code>tail</code>
+            ชี้ที่ก้อนใหม่</li>
+            <li><b>กรณีที่ 2</b> มีก้อนข้อมูลอยู่แล้ว ใส่ที่ <code>tail.next</code>
+            แล้วเลื่อน <code>tail</code> มาที่ก้อนใหม่</li>
+          </ul>
+          <p>คลาส <code>LinkedList</code> ของอาจารย์เก็บทั้ง <code>_head</code>, <code>_tail</code>
+          และ <code>_size</code> การใส่ที่ด้านท้ายจึงไม่ต้องไล่ทั้งรายการ</p>`,
+        examples: [
+          {
+            title: "ตัวอย่างที่ 7.4 — LinkedList ที่ใส่โหนดด้านท้ายได้",
+            code: String.raw`class Node():
+    def __init__(self, datum):
+        self.data = datum
+        self.next = None
+
+    def getData(self):
+        return self.data
+
+    def __str__(self):
+        return str(self.data)
+
 
 class LinkedList():
     def __init__(self):
@@ -2144,7 +2574,6 @@ class LinkedList():
         else:
             self._tail.next = new_node
             self._tail = self._tail.next
-        self._size += 1
 
     def __str__(self):
         curr = self._head
@@ -2154,42 +2583,52 @@ class LinkedList():
             s = s + "node : " + str(i) + " " + str(curr) + "\n"
             curr = curr.next
             i += 1
-        return s
+        return(s)
+
 
 if __name__ == '__main__':
+    d1 = ["65-1", "Mark"]
+    d2 = ["65-2", "Ed"]
     mylist = LinkedList()
-    mylist.insertAtTail(["65-1", "Mark"])
-    mylist.insertAtTail(["65-2", "Ed"])
+    mylist.insertAtTail(d1)
+    mylist.insertAtTail(d2)
     mylist.insertAtTail(["65-3", "Ty"])
     print(mylist)`,
           },
         ],
       },
+
       {
         heading: "7.3 การใส่และนำโหนดออกที่ด้านหัว",
         body: `
-          <p><strong>insertAtHead</strong> — สลับลำดับให้ดี ไม่งั้นจะทำก้อนเดิมหายทั้งสาย</p>
+          <p><b>insertAtHead</b> มีสองขั้นตอนที่<b>ลำดับสำคัญมาก</b></p>
           <ol>
-            <li><code>new_node.next = head</code> — ให้ก้อนใหม่ชี้ไปที่ก้อนแรกเดิม</li>
-            <li><code>head = new_node</code> — แล้วค่อยเลื่อน head มาที่ก้อนใหม่</li>
+            <li><code>new_node.next = Head</code> ให้ก้อนใหม่ชี้ไปที่หัวเดิมก่อน</li>
+            <li><code>Head = new_node</code> แล้วจึงย้ายหัวมาที่ก้อนใหม่</li>
           </ol>
-          <p><strong>removeAtHead</strong> — เก็บข้อมูลของ head ไว้ แล้วเลื่อน
-          <code>head = head.next</code> ก้อนเดิมจะไม่มีใครชี้ถึงและถูกเก็บกวาดอัตโนมัติ</p>`,
+          <div class="note warn">ถ้าสลับลำดับสองบรรทัดนี้ ก้อนใหม่จะชี้กลับมาที่ตัวเอง
+          และข้อมูลเดิมทั้งรายการจะหายไปทันที เพราะไม่มีใครชี้ถึงมันอีก</div>
+          <p><b>removeAtHead</b> ทำได้ด้วยการเลื่อน <code>Head = Head.next</code></p>`,
         examples: [
           {
-            title: "7.5 / 7.6 insertAtHead และ removeAtHead",
+            title: "ตัวอย่างที่ 7.5 / 7.6 — insertAtHead และ removeAtHead",
             code: String.raw`class Node():
     def __init__(self, datum):
         self.data = datum
         self.next = None
 
+    def getData(self):
+        return self.data
+
     def __str__(self):
         return str(self.data)
+
 
 class LinkedList():
     def __init__(self):
         self._head = None
         self._tail = None
+        self._size = 0
 
     def insertAtTail(self, datum):
         new_node = Node(datum)
@@ -2206,15 +2645,13 @@ class LinkedList():
             self._tail = new_node
             self._head = new_node
         else:
-            new_node.next = self._head      # 1. ชี้ไปก้อนแรกเดิม
-            self._head = new_node           # 2. เลื่อน head
+            new_node.next = self._head
+            self._head = new_node
 
     def removeAtHead(self):
-        if self._head != None:
+        if (self._head != None):
             datum = self._head.data
             self._head = self._head.next
-            if self._head == None:
-                self._tail = None
             return datum
         else:
             print("List is empty")
@@ -2228,262 +2665,337 @@ class LinkedList():
             s = s + "node : " + str(i) + " " + str(curr) + "\n"
             curr = curr.next
             i += 1
-        return s
+        return(s)
+
 
 if __name__ == '__main__':
+    d1 = ["65-1", "Mark"]
+    d2 = ["65-2", "Ed"]
     mylist = LinkedList()
-    mylist.insertAtTail(["65-1", "Mark"])
-    mylist.insertAtTail(["65-2", "Ed"])
-    print("เริ่มต้น:")
-    print(mylist)
-
+    mylist.insertAtHead(d1)
+    mylist.insertAtHead(d2)
     mylist.insertAtHead(["65-3", "Ty"])
-    print("หลัง insertAtHead:")
     print(mylist)
 
     data = mylist.removeAtHead()
-    print("removeAtHead ได้:", data)
+    print(data, "is removed.")
     print(mylist)`,
           },
         ],
       },
+
       {
-        heading: "7.4 โครงสร้างข้อมูล Queue (แถวรอ)",
+        heading: "7.4 โครงสร้างข้อมูล Queue หรือ แถวรอ",
         body: `
-          <p>Queue คือโครงสร้างข้อมูลสำหรับสร้างแถวรอ ต่างจาก Stack ตรงที่
-          <strong>เข้าคนละทางกับออก</strong></p>
+          <p>Queue เป็นโครงสร้างข้อมูลสำหรับการสร้างแถวการรอ
+          การนำก้อนข้อมูลเข้าคนละทางกับออก คือ<b>ใส่ด้านหลัง (rear)</b> และ
+          <b>เอาออกด้านหน้า (front)</b> เรียกได้ว่าเป็นโครงสร้างข้อมูลแบบ
+          <b>First In First Out (FIFO)</b></p>
           <ul>
-            <li><strong>Enqueue</strong> — ใส่ก้อนข้อมูลที่ด้านหลัง (rear)</li>
-            <li><strong>Dequeue</strong> — เอาก้อนข้อมูลออกที่ด้านหน้า (front)</li>
+            <li><b>Enqueue</b> คือกระบวนการใส่ข้อมูลลงไปในแถวรอ ต้องใส่ด้านหลัง</li>
+            <li><b>Dequeue</b> คือกระบวนการเอาก้อนข้อมูลออก ต้องเอาออกจากด้านหน้า</li>
           </ul>
-          <p>จึงเรียกว่าโครงสร้างแบบ <strong>First In First Out (FIFO)</strong>
-          — เหมือนคนต่อแถวซื้อของ ใครมาก่อนได้ก่อน</p>
-          <p>Python มี <code>collections.deque</code> ที่เอาข้อมูลออกจากด้านหน้าได้เร็ว
-          จึงเหมาะกับการทำ Queue มากกว่าการใช้ <code>list</code> ธรรมดา</p>`,
+          <div class="note warn"><b>ข้อควรระวังจากสไลด์</b> โค้ดคลาส <code>Queue</code> ในเอกสารบรรยาย
+          เรียกใช้ <code>self.is_empty()</code> ในเมท็อด <code>dequeue</code>
+          แต่<b>ไม่ได้เขียนเมท็อด <code>is_empty</code> ไว้</b>
+          ถ้าลอกตามสไลด์ตรง ๆ จะเกิด <code>AttributeError</code> ตอนรัน
+          ตัวอย่างข้างล่างจึงเติมเมท็อดนี้เข้าไปให้ครบ</div>`,
         examples: [
           {
-            title: "Queue ด้วย collections.deque",
+            title: "7.2.3 การสร้าง Queue ด้วย Python (เติม is_empty ที่สไลด์ตกไป)",
             code: String.raw`from collections import deque
+
 
 class Queue:
     def __init__(self):
         self.items = deque()
 
+    def is_empty(self):          # สไลด์เรียกใช้แต่ไม่ได้เขียนไว้
+        return len(self.items) == 0
+
     def enqueue(self, item):
-        self.items.append(item)          # ใส่ด้านหลัง
+        self.items.append(item)
 
     def dequeue(self):
         if self.is_empty():
             raise IndexError("Queue is empty")
-        return self.items.popleft()      # เอาออกด้านหน้า
-
-    def is_empty(self):
-        return len(self.items) == 0
+        return self.items.popleft()
 
     def size(self):
         return len(self.items)
+
 
 if __name__ == '__main__':
     q = Queue()
     q.enqueue("A")
     q.enqueue("B")
     q.enqueue("C")
-    print("ในแถวมี", q.size(), "คน")
-
-    print(q.dequeue())   # A  เข้าก่อนออกก่อน
+    print(q.dequeue())   # A
     print(q.dequeue())   # B
-    print(q.dequeue())   # C
-    print("ว่างหรือยัง:", q.is_empty())`,
+    print(q.dequeue())   # C`,
           },
           {
             title: "เทียบ Stack (FILO) กับ Queue (FIFO)",
             code: String.raw`from collections import deque
 
-stack = []
-queue = deque()
 
-for x in ["A", "B", "C"]:
-    stack.append(x)
-    queue.append(x)
+class Queue:
+    def __init__(self):
+        self.items = deque()
 
-print("ใส่เข้าไปตามลำดับ: A B C")
-print()
+    def is_empty(self):
+        return len(self.items) == 0
 
-print("Stack (FILO) เอาออกได้:", end=" ")
-while stack:
-    print(stack.pop(), end=" ")
-print()
+    def enqueue(self, item):
+        self.items.append(item)
 
-print("Queue (FIFO) เอาออกได้:", end=" ")
-while queue:
-    print(queue.popleft(), end=" ")
-print()`,
+    def dequeue(self):
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self.items.popleft()
+
+    def size(self):
+        return len(self.items)
+
+
+if __name__ == '__main__':
+    data = ["A", "B", "C"]
+
+    q = Queue()
+    for x in data:
+        q.enqueue(x)
+    out_q = []
+    while not q.is_empty():
+        out_q.append(q.dequeue())
+
+    st = []
+    for x in data:
+        st.append(x)
+    out_s = []
+    while len(st) > 0:
+        out_s.append(st.pop())
+
+    print("ใส่เข้าไป      :", data)
+    print("Queue (FIFO)  :", out_q)
+    print("Stack (FILO)  :", out_s)`,
           },
         ],
       },
+
       {
         heading: "7.5 Circular และ Doubly Linked List",
         body: `
-          <p><strong>Circular Linked List</strong> — เชื่อมก้อนข้อมูลเป็นวงกลม
-          โหนดสุดท้ายชี้กลับมาที่โหนดแรกแทนที่จะชี้ <code>None</code>
+          <p><b>Circular Linked List</b> เชื่อมก้อนข้อมูลเป็นวงกลม
           มีการจำหัว ท้าย หรือตำแหน่งหนึ่งในวงกลม</p>
-          <p><strong>Doubly Linked List</strong> — แต่ละโหนดมีตัวอ้างอิง 2 ตัว
-          คือ <code>prev</code> ชี้ก้อนก่อนหน้า และ <code>next</code> ชี้ก้อนถัดไป
-          ทำให้เดินย้อนกลับได้ นิยมสร้างก้อนเปล่า “dummy” ไว้ที่หัวและท้ายเพื่อลดกรณีพิเศษ</p>
-          <p><strong>ขั้นตอนการใส่ก้อนที่ด้านหน้าของ Doubly Linked List</strong> — ลำดับสำคัญมาก</p>
+          <p><b>Doubly Linked List</b> มีการสร้างก้อนข้อมูลเปล่า <code>dummy</code>
+          เพื่อจำหัวและท้าย และมีตัวอ้างอิงจำก้อนก่อนหน้า <code>prev</code> และก้อนถัดไป <code>next</code></p>
+          <p><b>การใส่ก้อนข้อมูลด้านหน้าของ Doubly Linked List</b></p>
           <ol>
-            <li><code>new_node.prev = header</code></li>
-            <li><code>new_node.next = header.next</code></li>
+            <li>นำตัวชี้ prev ของก้อนใหม่ไปชี้ที่ header — <code>new_node.prev = header</code></li>
+            <li>นำตัวชี้ next ของก้อนใหม่ไปชี้ที่ก้อนถัดไป — <code>new_node.next = header.next</code></li>
             <li><code>header.next.prev = new_node</code></li>
             <li><code>header.next = new_node</code></li>
           </ol>`,
         examples: [
           {
-            title: "Doubly Linked List เดินไป-กลับได้",
-            code: String.raw`class DNode:
-    def __init__(self, data):
-        self.data = data
+            title: "Doubly Linked List ที่เดินไป-กลับได้",
+            code: String.raw`class DNode():
+    def __init__(self, datum):
+        self.data = datum
         self.prev = None
         self.next = None
 
     def __str__(self):
         return str(self.data)
 
-class DoublyLinkedList:
+
+class DoublyLinkedList():
     def __init__(self):
-        self._head = None
-        self._tail = None
+        self.header = DNode(None)      # ก้อนเปล่า dummy
+        self.trailer = DNode(None)
+        self.header.next = self.trailer
+        self.trailer.prev = self.header
 
-    def insertAtTail(self, data):
-        node = DNode(data)
-        if self._tail == None:
-            self._head = node
-            self._tail = node
-        else:
-            node.prev = self._tail
-            self._tail.next = node
-            self._tail = node
+    def insertAtFront(self, datum):
+        new_node = DNode(datum)
+        new_node.prev = self.header
+        new_node.next = self.header.next
+        self.header.next.prev = new_node
+        self.header.next = new_node
 
-    def forward(self):
-        out = []
-        curr = self._head
-        while curr != None:
-            out.append(str(curr))
+    def showForward(self):
+        curr = self.header.next
+        while curr != self.trailer:
+            print(curr, end=" ")
             curr = curr.next
-        return " -> ".join(out)
+        print()
 
-    def backward(self):
-        out = []
-        curr = self._tail
-        while curr != None:
-            out.append(str(curr))
+    def showBackward(self):
+        curr = self.trailer.prev
+        while curr != self.header:
+            print(curr, end=" ")
             curr = curr.prev
-        return " -> ".join(out)
+        print()
+
 
 if __name__ == '__main__':
-    dll = DoublyLinkedList()
-    for code in ["JFK", "PVD", "SFO"]:
-        dll.insertAtTail(code)
-
-    print("เดินหน้า :", dll.forward())
-    print("ย้อนกลับ:", dll.backward())`,
+    d = DoublyLinkedList()
+    d.insertAtFront("SFP")
+    d.insertAtFront("PVD")
+    d.insertAtFront("JFK")
+    d.showForward()
+    d.showBackward()`,
           },
         ],
       },
     ],
     exercises: [
       {
-        prompt: "เพิ่มเมท็อด search(value) ให้ LinkedList คืนตำแหน่งของโหนดที่มีข้อมูลตรงกัน (เริ่มนับจาก 1) หรือ -1 ถ้าไม่พบ",
+        prompt: "เพิ่มเมท็อด search(value) ให้คลาส LinkedList ของอาจารย์ คืนตำแหน่งของโหนดที่ข้อมูลตรงกัน (เริ่มนับจาก 1) หรือ -1 ถ้าไม่พบ",
         starter: String.raw`class Node():
     def __init__(self, datum):
         self.data = datum
         self.next = None
 
+    def __str__(self):
+        return str(self.data)
+
+
 class LinkedList():
     def __init__(self):
         self._head = None
         self._tail = None
+        self._size = 0
 
     def insertAtTail(self, datum):
-        node = Node(datum)
+        new_node = Node(datum)
         if self._tail == None:
-            self._head = node
-            self._tail = node
+            self._tail = new_node
+            self._head = new_node
         else:
-            self._tail.next = node
-            self._tail = node
+            self._tail.next = new_node
+            self._tail = self._tail.next
 
     def search(self, value):
         # เขียนโค้ดตรงนี้
-        return -1
+        pass
 
-mylist = LinkedList()
-for x in ["Mark", "Ed", "Ty"]:
-    mylist.insertAtTail(x)
 
-print(mylist.search("Ed"))    # ควรได้ 2
-print(mylist.search("Bob"))   # ควรได้ -1
-`,
+if __name__ == '__main__':
+    mylist = LinkedList()
+    mylist.insertAtTail("Mark")
+    mylist.insertAtTail("Ed")
+    mylist.insertAtTail("Ty")
+    print(mylist.search("Ed"))
+    print(mylist.search("Tim"))`,
         solution: String.raw`class Node():
     def __init__(self, datum):
         self.data = datum
         self.next = None
 
+    def __str__(self):
+        return str(self.data)
+
+
 class LinkedList():
     def __init__(self):
         self._head = None
         self._tail = None
+        self._size = 0
 
     def insertAtTail(self, datum):
-        node = Node(datum)
+        new_node = Node(datum)
         if self._tail == None:
-            self._head = node
-            self._tail = node
+            self._tail = new_node
+            self._head = new_node
         else:
-            self._tail.next = node
-            self._tail = node
+            self._tail.next = new_node
+            self._tail = self._tail.next
 
     def search(self, value):
         curr = self._head
-        i = 1
+        pos = 1
         while curr != None:
             if curr.data == value:
-                return i
+                return pos
             curr = curr.next
-            i += 1
+            pos += 1
         return -1
 
-mylist = LinkedList()
-for x in ["Mark", "Ed", "Ty"]:
-    mylist.insertAtTail(x)
 
-print(mylist.search("Ed"))
-print(mylist.search("Bob"))`,
+if __name__ == '__main__':
+    mylist = LinkedList()
+    mylist.insertAtTail("Mark")
+    mylist.insertAtTail("Ed")
+    mylist.insertAtTail("Ty")
+    print(mylist.search("Ed"))
+    print(mylist.search("Tim"))`,
       },
       {
-        prompt: "จำลองแถวรอที่ธนาคาร: รับชื่อลูกค้าจากผู้ใช้จนกว่าจะพิมพ์ 'q' แล้วเรียกคิวออกมาทีละคนตามลำดับที่มา",
+        prompt: "จำลองแถวรอที่ธนาคาร รับชื่อลูกค้าจากผู้ใช้จนกว่าจะพิมพ์ q แล้วเรียกคิวออกมาทีละคนตามลำดับที่มา โดยใช้คลาส Queue",
+        stdin: "สมชาย\nมานี\nปิติ\nq\n",
         starter: String.raw`from collections import deque
 
-queue = deque()
-# เขียนโค้ดตรงนี้
+
+class Queue:
+    def __init__(self):
+        self.items = deque()
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def enqueue(self, item):
+        self.items.append(item)
+
+    def dequeue(self):
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self.items.popleft()
+
+    def size(self):
+        return len(self.items)
+
+
+if __name__ == '__main__':
+    q = Queue()
+    # รับชื่อจนกว่าจะพิมพ์ q แล้วเรียกคิวออกมาทีละคน
 `,
-        stdin: "Somchai\nMalee\nAnan\nq",
         solution: String.raw`from collections import deque
 
-queue = deque()
-while True:
-    name = input("ชื่อลูกค้า (q เพื่อจบ): ")
-    if name == "q":
-        break
-    queue.append(name)
-    print("  ", name, "เข้าคิวแล้ว มีทั้งหมด", len(queue), "คน")
 
-print()
-print("เริ่มเรียกคิว")
-n = 1
-while len(queue) > 0:
-    print("คิวที่", n, ":", queue.popleft())
-    n += 1`,
+class Queue:
+    def __init__(self):
+        self.items = deque()
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def enqueue(self, item):
+        self.items.append(item)
+
+    def dequeue(self):
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self.items.popleft()
+
+    def size(self):
+        return len(self.items)
+
+
+if __name__ == '__main__':
+    q = Queue()
+    while True:
+        name = input("ชื่อลูกค้า (q เพื่อจบ): ")
+        if name == "q":
+            break
+        q.enqueue(name)
+
+    print("มีลูกค้าในคิว", q.size(), "คน")
+    order = 1
+    while not q.is_empty():
+        print("เรียกคิวที่", order, ":", q.dequeue())
+        order += 1
+    print("หมดคิวแล้ว")`,
       },
     ],
   },
