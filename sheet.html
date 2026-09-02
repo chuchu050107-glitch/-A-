@@ -6,200 +6,201 @@
 <style>body{margin:0}img{max-width:100%}</style>
 </head>
 <body>
-<title>ชีทสอบ 618240 บท 4-7</title>
+<title>ชีทสอบ 618240 บท 1-7</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&family=Archivo+Narrow:wght@600;700&family=IBM+Plex+Mono:wght@400;600;700&display=swap">
 
 <style>
 :root {
-  --ground: #ffffff; --ink: #14161c; --ink-2: #454b5c;
-  --rule: #c7cbd6; --rule-soft: #e4e7ef; --wash: #f1f3f8;
-  --ch13: #4a4f63; --ch4: #1f3a93; --ch5: #0e6e5c; --ch6: #8a4a0b; --ch7: #98123c;
-  --warn: #8a1414; --page-gap: #9aa0b0;
+  --paper: #ffffff;
+  --ink: #101010;
+  --ink-2: #5a5a58;
+  --rule: #bdbdb8;
+  --rule-hair: #e0e0dc;
+  --wash: #f2f2f0;
+  --red: #b3261e;
+  --desk: #8e8e88;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --ground: #15171d; --ink: #e8eaf0; --ink-2: #a3aab9;
-    --rule: #3c4150; --rule-soft: #272b35; --wash: #1d2029;
-    --ch13: #9aa2bb; --ch4: #8fa6ee; --ch5: #5ec4ad; --ch6: #e0a460; --ch7: #f0879f;
-    --warn: #f0879f; --page-gap: #0c0d11;
+    --paper: #16161a; --ink: #ececeb; --ink-2: #a0a09c;
+    --rule: #46464c; --rule-hair: #2a2a30; --wash: #1e1e24;
+    --red: #ef7b72; --desk: #0b0b0d;
   }
 }
 :root[data-theme="dark"] {
-  --ground: #15171d; --ink: #e8eaf0; --ink-2: #a3aab9;
-  --rule: #3c4150; --rule-soft: #272b35; --wash: #1d2029;
-  --ch13: #9aa2bb; --ch4: #8fa6ee; --ch5: #5ec4ad; --ch6: #e0a460; --ch7: #f0879f;
-  --warn: #f0879f; --page-gap: #0c0d11;
+  --paper: #16161a; --ink: #ececeb; --ink-2: #a0a09c;
+  --rule: #46464c; --rule-hair: #2a2a30; --wash: #1e1e24;
+  --red: #ef7b72; --desk: #0b0b0d;
 }
 
 * { box-sizing: border-box; }
 
 body {
-  margin: 0; background: var(--page-gap); color: var(--ink);
-  font-family: "IBM Plex Sans Thai", "Segoe UI", system-ui, sans-serif;
+  margin: 0; background: var(--desk); color: var(--ink);
+  font-family: "Sarabun", "Segoe UI", system-ui, sans-serif;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
 
+/* ---------- แถบเครื่องมือ (ไม่พิมพ์) ---------- */
 .bar {
   max-width: 210mm; margin: 0 auto; padding: 14px 4mm;
-  display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
-  color: #e8eaf0; font-size: 13px;
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  color: #f0f0ee; font-size: 13px;
 }
 .bar b { color: #fff; }
-.bar button {
-  font: 600 13px/1 "IBM Plex Sans Thai", system-ui, sans-serif;
-  padding: 8px 16px; border-radius: 6px;
-  border: 1px solid #5a6172; background: #262a34; color: #fff; cursor: pointer;
+.bar button, .bar .dl {
+  font: 600 13px/1 "Sarabun", system-ui, sans-serif;
+  padding: 8px 15px; border: 1px solid #6d6d66; border-radius: 2px;
+  background: #2a2a28; color: #fff; cursor: pointer; text-decoration: none;
 }
-.bar button:hover { background: #333846; }
-.bar button:focus-visible, .bar .dl:focus-visible { outline: 2px solid #8fa6ee; outline-offset: 2px; }
-.bar .dl {
-  font: 600 13px/1 "IBM Plex Sans Thai", system-ui, sans-serif;
-  padding: 8px 16px; border-radius: 6px;
-  border: 1px solid #5a6172; color: #e8eaf0; text-decoration: none;
-}
-.bar .dl:hover { background: #262a34; }
+.bar button:hover, .bar .dl:hover { background: #3b3b38; }
+.bar button:focus-visible, .bar .dl:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
 
+/* ---------- แผ่นกระดาษ ---------- */
 .sheet {
-  width: 210mm; min-height: 297mm; margin: 0 auto 10mm;
-  padding: 7mm 7mm 5mm; background: var(--ground);
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 0 4mm; align-content: start;
+  width: 210mm; height: 297mm; margin: 0 auto 8mm;
+  padding: 6.5mm 6.5mm 4.5mm;
+  background: var(--paper);
+  display: flex; flex-direction: column;
 }
-.col { display: flex; flex-direction: column; gap: 1.5mm; min-width: 0; }
 
+/* หัวกระดาษแบบแถบเดียว */
 .masthead {
-  grid-column: 1 / -1;
-  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
-  border-bottom: 1.6pt solid var(--ink);
-  padding-bottom: 0.8mm; margin-bottom: 1.6mm;
+  display: flex; align-items: center; gap: 3mm;
+  border-bottom: 1.2pt solid var(--ink);
+  padding-bottom: 1mm; margin-bottom: 2mm; flex: none;
 }
-.masthead h1 { margin: 0; font-size: 9.5pt; font-weight: 700; letter-spacing: -0.01em; }
+.masthead .code {
+  font-family: "Archivo Narrow", sans-serif; font-weight: 700;
+  font-size: 12pt; letter-spacing: 0.02em; line-height: 1;
+  background: var(--ink); color: var(--paper); padding: 0.9mm 1.8mm;
+}
+.masthead h1 { margin: 0; font-size: 9.5pt; font-weight: 700; letter-spacing: 0.01em; }
 .masthead .sub { font-size: 6.8pt; color: var(--ink-2); margin-right: auto; }
 .masthead .pg {
-  font-family: "Barlow Semi Condensed", sans-serif;
-  font-weight: 700; font-size: 7.2pt; letter-spacing: 0.07em; text-transform: uppercase;
+  font-family: "Archivo Narrow", sans-serif; font-weight: 700;
+  font-size: 7.4pt; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red);
 }
 
-.blk {
-  border: 0.5pt solid var(--rule);
-  border-top: 2pt solid var(--bd, var(--ink));
-  border-radius: 1.2mm; padding: 1.1mm 1.5mm 1.3mm; break-inside: avoid;
+/* เนื้อหาไหลเต็มคอลัมน์ */
+.flow {
+  flex: 1 1 auto; min-height: 0;
+  column-count: 3; column-gap: 4.5mm;
+  column-rule: 0.4pt solid var(--rule-hair);
+  column-fill: auto;
 }
-.blk[data-ch="1"], .blk[data-ch="2"], .blk[data-ch="3"] { --bd: var(--ch13); }
-.blk[data-ch="4"] { --bd: var(--ch4); }
-.blk[data-ch="5"] { --bd: var(--ch5); }
-.blk[data-ch="6"] { --bd: var(--ch6); }
-.blk[data-ch="7"] { --bd: var(--ch7); }
 
-.blk > h2 {
-  margin: 0 0 1mm; font-size: 7.8pt; font-weight: 700; line-height: 1.25;
-  display: flex; align-items: center; gap: 1.4mm; text-wrap: balance;
+/* หัวข้อแบบแท็บเลขบท */
+.s { break-inside: avoid; margin: 0 0 2.2mm; }
+.s:first-child { margin-top: 0; }
+.s > h2 {
+  margin: 0 0 0.9mm;
+  display: flex; align-items: baseline; gap: 1.3mm;
+  font-size: 8pt; font-weight: 700; line-height: 1.2;
+  border-top: 1pt solid var(--ink); padding-top: 0.9mm;
+  text-wrap: balance;
 }
-.badge {
-  flex: none; font-family: "Barlow Semi Condensed", sans-serif;
-  font-weight: 700; font-size: 6.6pt; letter-spacing: 0.05em;
-  color: var(--ground); background: var(--bd);
-  padding: 0.4mm 1.3mm; border-radius: 0.8mm; white-space: nowrap;
+.s.first > h2 { border-top: none; padding-top: 0; }
+.n {
+  flex: none; font-family: "Archivo Narrow", sans-serif;
+  font-weight: 700; font-size: 7pt; letter-spacing: 0.04em;
+  color: var(--paper); background: var(--red);
+  padding: 0.15mm 1.1mm; white-space: nowrap;
 }
-.tag {
-  font-family: "Barlow Semi Condensed", sans-serif;
-  font-weight: 600; font-size: 6.8pt; letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--bd, var(--ink-2)); border: 0.5pt solid currentColor;
-  border-radius: 0.8mm; padding: 0.2mm 1mm; margin-left: auto;
-  white-space: nowrap; font-variant-numeric: tabular-nums;
+.tg {
+  margin-left: auto; flex: none;
+  font-family: "Archivo Narrow", sans-serif; font-weight: 700;
+  font-size: 6.8pt; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--red); white-space: nowrap; font-variant-numeric: tabular-nums;
 }
 
 pre {
-  margin: 0.8mm 0 0; background: var(--wash); border-radius: 1mm;
-  padding: 1.1mm 1mm;
-  font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 5.8pt; line-height: 1.22;
+  margin: 0.7mm 0 0; background: var(--wash);
+  border-left: 1.2pt solid var(--rule);
+  padding: 1mm 1.2mm 1mm 1.4mm;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 6.5pt; line-height: 1.28;
   overflow-x: auto; white-space: pre; tab-size: 4;
+  break-inside: avoid;
 }
 pre .c { color: var(--ink-2); }
-pre .o { color: var(--bd, var(--ink)); font-weight: 700; }
-pre b { font-weight: 700; color: var(--bd, var(--ink)); }
+pre .o { color: var(--red); font-weight: 600; }
+pre b { font-weight: 700; color: var(--red); }
 
-p { margin: 0.6mm 0 0; font-size: 6.4pt; line-height: 1.28; }
+p { margin: 0.7mm 0 0; font-size: 6.9pt; line-height: 1.32; }
 p.lead { margin-top: 0; }
 code {
-  font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 6.4pt; background: var(--wash); padding: 0 0.6mm; border-radius: 0.6mm;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 6.5pt; background: var(--wash); padding: 0 0.5mm;
 }
+b, strong { font-weight: 700; }
 
-ul { margin: 0.8mm 0 0; padding-left: 3.2mm; }
-li { font-size: 6.4pt; line-height: 1.26; margin-bottom: 0.2mm; }
-li::marker { color: var(--bd, var(--ink-2)); }
+ul, ol { margin: 0.7mm 0 0; padding-left: 3.4mm; }
+li { font-size: 6.9pt; line-height: 1.3; margin-bottom: 0.2mm; }
+li::marker { color: var(--red); }
 
 table {
   width: 100%; border-collapse: collapse; margin-top: 0.8mm;
-  font-size: 6.3pt; font-variant-numeric: tabular-nums;
+  font-size: 6.7pt; font-variant-numeric: tabular-nums;
 }
 th, td {
-  border-bottom: 0.4pt solid var(--rule-soft);
-  padding: 0.55mm 0.8mm 0.55mm 0; text-align: left; vertical-align: top;
+  border-bottom: 0.4pt solid var(--rule-hair);
+  padding: 0.5mm 0.8mm 0.5mm 0; text-align: left; vertical-align: top;
 }
 th {
-  font-family: "Barlow Semi Condensed", sans-serif;
-  font-weight: 700; font-size: 6.6pt; letter-spacing: 0.05em; text-transform: uppercase;
-  border-bottom: 0.8pt solid var(--rule); color: var(--ink-2);
+  font-family: "Archivo Narrow", sans-serif; font-weight: 700;
+  font-size: 6.6pt; letter-spacing: 0.04em; text-transform: uppercase;
+  border-bottom: 0.7pt solid var(--ink); color: var(--ink);
 }
-td.mono { font-family: "JetBrains Mono", monospace; font-size: 5.8pt; }
+td.mono { font-family: "IBM Plex Mono", monospace; font-size: 6.5pt; }
 
-.trap {
-  border: 0.5pt solid var(--warn); border-left: 1.6pt solid var(--warn);
-  border-radius: 1mm; padding: 1.2mm 1.6mm 1.4mm; break-inside: avoid;
-}
-.trap h3 {
-  margin: 0; font-family: "Barlow Semi Condensed", sans-serif;
-  font-weight: 700; font-size: 7pt; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--warn);
-}
-.trap p, .trap li { font-size: 6.4pt; }
-.trap ul { padding-left: 3.2mm; }
-.trap li::marker { color: var(--warn); }
+/* กล่องกับดัก — แถบแดงทึบ ไม่มีกรอบรอบ */
+.s.warn > h2 { border-top: 1pt solid var(--red); }
+.s.warn > h2 .n { background: var(--ink); }
+.s.warn p, .s.warn li { color: var(--ink); }
+.s.warn { border-left: 1.2pt solid var(--red); padding-left: 1.4mm; }
 
 .foot {
-  grid-column: 1 / -1; margin-top: 1.2mm; padding-top: 0.8mm;
-  border-top: 0.5pt solid var(--rule);
-  font-size: 6pt; color: var(--ink-2);
+  flex: none; margin-top: 1.2mm; padding-top: 0.8mm;
+  border-top: 1.2pt solid var(--ink);
+  font-family: "Archivo Narrow", sans-serif;
+  font-size: 6.4pt; letter-spacing: 0.03em; color: var(--ink-2);
   display: flex; justify-content: space-between; gap: 8px;
 }
 
 @media print {
   :root, :root[data-theme="dark"], :root:not([data-theme="light"]) {
-    --ground: #ffffff; --ink: #14161c; --ink-2: #454b5c;
-    --rule: #c7cbd6; --rule-soft: #e4e7ef; --wash: #f1f3f8;
-    --ch13: #4a4f63; --ch4: #1f3a93; --ch5: #0e6e5c; --ch6: #8a4a0b; --ch7: #98123c;
-    --warn: #8a1414;
+    --paper: #ffffff; --ink: #101010; --ink-2: #5a5a58;
+    --rule: #bdbdb8; --rule-hair: #e0e0dc; --wash: #f2f2f0; --red: #b3261e;
   }
   @page { size: A4; margin: 0; }
   body { background: #fff; }
   .bar { display: none; }
-  .sheet { margin: 0; width: 210mm; height: 296mm; min-height: 0; break-after: page; }
+  .sheet { margin: 0; height: 296mm; break-after: page; }
   .sheet:last-of-type { break-after: auto; }
 }
 </style>
 
 <div class="bar">
   <b>ชีทสอบ 618240 · บท 1-7</b>
-  <span>บท 4-7 โค้ดคัดจากเอกสารบรรยายโดยตรง &mdash; พิมพ์ A4 หน้า-หลัง ตั้ง Margins เป็น None และเปิด Background graphics</span>
+  <span>บท 4-7 โค้ดคัดจากเอกสารบรรยายโดยตรง &mdash; พิมพ์ A4 หน้า-หลัง ตั้ง Margins เป็น None, Scale 100% และเปิด Background graphics</span>
   <button onclick="window.print()">พิมพ์ / บันทึกเป็น PDF</button>
-  <a class="dl" href="https://chuchu050107-glitch.github.io/-A-/cheatsheet.pdf">ดาวน์โหลดไฟล์ PDF</a>
+  <a class="dl" href="https://chuchu050107-glitch.github.io/-A-/cheatsheet.pdf">ดาวน์โหลด PDF</a>
 </div>
 
 <section class="sheet">
   <div class="masthead">
-    <h1>ชีทสอบ · 618240</h1>
+    <span class="code">618240</span>
+    <h1>ชีทสอบข้อเขียน</h1>
     <span class="sub">โครงสร้างข้อมูลและอัลกอริทึม</span>
-    <span class="pg">หน้า 1 / 2 &nbsp;·&nbsp; บรรยาย 1-4 · พื้นฐาน &amp; SORTING</span>
+    <span class="pg">หน้า 1/2 · บรรยาย 1-4</span>
   </div>
-  <div class="col">
-    <div class="blk" data-ch="1">
-      <h2><span class="badge">บรรยาย 1-2</span> ไวยากรณ์ที่ต้องใช้บ่อย</h2>
-      <pre>9/2=4.5   9//2=4   9%2=1   2**3=8
+  <div class="flow">
+  <section class="s first">
+    <h2><span class="n">1-2</span>ไวยากรณ์ที่ต้องใช้บ่อย</h2>
+<pre>9/2=4.5   9//2=4   9%2=1   2**3=8
 int(3.9)=3  round(6.5)=6  abs(-9.0)=9.0
 eval("32+2")=34   str(36)="36"
 print("x:{0} y:{1}".format(x, y))
@@ -208,20 +209,21 @@ print(name, end=" ")
 s = input("...")          <span class="c"># ได้ str เสมอ</span>
 x = eval(input("..."))    <span class="c"># แปลงเลข</span>
 
-name = "Mark"   <span class="c">#  M0 a1 r2 k3  /  -4 -3 -2 -1</span>
+name = "Mark"  <span class="c"># M0 a1 r2 k3 / -4 -3 -2 -1</span>
 name[1:2]<span class="o">'a'</span>  name[0:3]<span class="o">'Mar'</span>  name[-1]<span class="o">'k'</span>
 name[:4]<span class="o">'Mark'</span>  name[1:]<span class="o">'ark'</span>
 len() upper() lower() count() capitalize()
-title() rstrip() split()   a+b ต่อ   "x"*3 ซ้ำ
+title() rstrip() split()  a+b ต่อ  "x"*3 ซ้ำ
 
-a.append(x) a.extend(b) a.remove(x) a.clear()
+a.append(x)  a.extend(b)  a.remove(x)
+a.clear()
 sum(a) min(a) max(a) len(a)  a[1:3]
 a + b ต่อ list     a * 2 ทำซ้ำ
 list('home') <span class="o">['h','o','m','e']</span></pre>
-    </div>
-    <div class="blk" data-ch="2">
-      <h2><span class="badge">บรรยาย 2</span> โครงสร้างควบคุม</h2>
-      <p class="lead">Python ไม่ใช้ <code>;</code> และ <code>{ }</code> แต่ใช้<b>ย่อหน้า TAB</b></p>
+  </section>
+  <section class="s">
+    <h2><span class="n">2</span>โครงสร้างควบคุม</h2>
+<p class="lead">Python ไม่ใช้ <code>;</code> และ <code>{ }</code> แต่ใช้<b>ย่อหน้า TAB</b></p>
       <pre>score = eval(input("Enter score: "))
 if score &gt;= 80:
     grade = 'A'
@@ -237,7 +239,7 @@ while count &lt;= 5:
 
 while True:
     if stuff == "q":  break     <span class="c"># ออกจากลูป</span>
-    continue                    <span class="c"># ข้ามไปรอบถัดไป</span>
+    continue              <span class="c"># ข้ามไปรอบถัดไป</span>
 
 range(3,7) <span class="o">3 4 5 6</span>   range(5) <span class="o">0 1 2 3 4</span>
 range(1,1) <span class="o">ว่าง!</span>   range(3,10,2) <span class="o">3 5 7 9</span>
@@ -248,10 +250,10 @@ for x in a:            for ch in word:
 for i in range(len(a)):
 y = [x-10 for x in grades if x &gt; 50]</pre>
       <p><code>s.isdigit()</code> · <code>s.isupper()</code> · <code>isinstance(x, int)</code></p>
-    </div>
-    <div class="blk" data-ch="3">
-      <h2><span class="badge">บรรยาย 3</span> ฟังก์ชัน · Scope · CSV</h2>
-      <pre>def triple(x):
+  </section>
+  <section class="s">
+    <h2><span class="n">3</span>ฟังก์ชัน · Scope · CSV</h2>
+<pre>def triple(x):
     val = x*x*x
     return val
 
@@ -261,7 +263,7 @@ max_x, min_x = find_max_min(a)
 
 x = 0                       <span class="c"># global</span>
 def add_x():
-    <b>global x</b>                <span class="c"># ต้องขอก่อนแก้ค่า</span>
+    <b>global x</b>          <span class="c"># ขอก่อนแก้ค่า</span>
     x += 2
 
 import random
@@ -277,24 +279,24 @@ def readCSV(filename):
     infile.close()
     return mylist
 
-reader = csv.DictReader(infile)   <span class="c"># อ้างชื่อคอลัมน์</span>
-for row in reader:  name.append(row["Name"])</pre>
+<span class="c"># อ้างด้วยชื่อคอลัมน์</span>
+reader = csv.DictReader(infile)
+for row in reader:
+    name.append(row["Name"])</pre>
       <p>ขอ global แล้ว<b>ห้ามมี local ชื่อเดียวกัน</b> · <b>บรรยาย 4</b> ใช้ <code>readRecordToList</code>
       คือ <code>readCSV</code> ที่เพิ่ม <code>heading = next(infile)</code> ข้ามหัวตาราง</p>
-    </div>
-  </div>
-  <div class="col">
-    <div class="blk" data-ch="4">
-      <h2><span class="badge">บรรยาย 4</span> swap</h2>
-      <pre>def swap(a, i, j):
+  </section>
+  <section class="s">
+    <h2><span class="n">4</span>swap</h2>
+<pre>def swap(a, i, j):
     tmp = a[i]
     a[i] = a[j]
     a[j] = tmp
     return a</pre>
-    </div>
-    <div class="blk" data-ch="4">
-      <h2><span class="badge">บรรยาย 4</span> Bubble Sort <span class="tag">~ N*N</span></h2>
-      <pre>def bubbleSort(a, N):
+  </section>
+  <section class="s">
+    <h2><span class="n">4</span>Bubble Sort<span class="tg">~ N*N</span></h2>
+<pre>def bubbleSort(a, N):
     for i in range(N):
         for j in range(N - 1, 0, -1):
             if a[j] &lt; a[j - 1]:
@@ -306,10 +308,10 @@ data_sorted = bubbleSort(data, len(data))
 print(data_sorted)
 <span class="o">[1, 2, 7, 8]</span></pre>
       <p>ลูปใน <code>j</code> วิ่ง<b>ถอยหลัง</b> N−1 → 1 จึงดัน<b>ค่าน้อยขึ้นหน้า</b></p>
-    </div>
-    <div class="blk" data-ch="4">
-      <h2><span class="badge">บรรยาย 4</span> Selection Sort <span class="tag">~ N*N</span></h2>
-      <pre>def selectionSort(a, N):
+  </section>
+  <section class="s">
+    <h2><span class="n">4</span>Selection Sort<span class="tg">~ N*N</span></h2>
+<pre>def selectionSort(a, N):
     for i in range(0, N - 1):
         <b>min</b> = i
         for j in range(i + 1, N):
@@ -322,10 +324,10 @@ key = [8, 7, 2, 1]
 key_sorted = selectionSort(key, len(key))
 <span class="o">[1, 2, 7, 8]</span></pre>
       <p>หา<b>ตำแหน่ง</b>ค่าน้อยสุดเก็บใน <code>min</code> สลับครั้งเดียวตอนจบรอบ</p>
-    </div>
-    <div class="blk" data-ch="4">
-      <h2><span class="badge">บรรยาย 4</span> Insertion Sort <span class="tag">ดีสุด N</span></h2>
-      <pre>def insertionSort(a, n):
+  </section>
+  <section class="s">
+    <h2><span class="n">4</span>Insertion Sort<span class="tg">ดีสุด N</span></h2>
+<pre>def insertionSort(a, n):
     for i in range(1, n):
         key = a[i]
         j = i - 1
@@ -340,16 +342,16 @@ insertionSort(key, len(key))
 print(key)
 <span class="o">[1, 2, 7, 8]</span></pre>
       <p>เหมือนเรียงไพ่ในมือ · <b>ไม่มี return</b> แก้ list เดิมโดยตรง</p>
-    </div>
-    <div class="blk" data-ch="4">
-      <h2><span class="badge">บรรยาย 4</span> เปรียบเทียบความเร็ว</h2>
-      <p class="lead"><b>Bubble ~ N*N</b> ง่ายแต่ช้า · <b>Selection ~ N*N</b> ประมาณ Bubble
+  </section>
+  <section class="s">
+    <h2><span class="n">4</span>เปรียบเทียบความเร็ว</h2>
+<p class="lead"><b>Bubble ~ N*N</b> ง่ายแต่ช้า · <b>Selection ~ N*N</b> ประมาณ Bubble
       · <b>Insertion N*N</b> แต่ถ้าเรียงมาดีแล้วเหลือ <b>N</b><br>
       วิเคราะห์จาก<b>จำนวนรอบของคำสั่งที่ถูกเรียกมากที่สุด</b> คือลูปซ้อนสองชั้น</p>
-    </div>
-    <div class="blk" data-ch="4">
-      <h2><span class="badge">บรรยาย 4</span> เรียง record ด้วยกุญแจที่เป็น column</h2>
-      <pre>def insertionSortRec(r, n, key_col):
+  </section>
+  <section class="s">
+    <h2><span class="n">4</span>เรียง record ด้วยกุญแจที่เป็น column</h2>
+<pre>def insertionSortRec(r, n, key_col):
     for i in range(1, n):
         key_rec = r[i]
         j = i - 1
@@ -360,12 +362,10 @@ print(key)
         <span class="c"># Insert key</span>
         r[j + 1] = key_rec</pre>
       <p>เทียบที่คอลัมน์ <code>[key_col]</code> แต่ย้าย<b>ทั้งแถว</b></p>
-    </div>
-  </div>
-  <div class="col">
-    <div class="blk" data-ch="4">
-      <h2><span class="badge">บรรยาย 4</span> ตัวอย่างข้อมูล record</h2>
-      <pre>data = [
+  </section>
+  <section class="s">
+    <h2><span class="n">4</span>ตัวอย่างข้อมูล record</h2>
+<pre>data = [
   ['Mark', "123-65-6789", 75, 78, 82], \
   ['Tim',  "123-65-5723", 67, 45, 74], \
   ['Amy',  "123-65-4542", 78, 65, 90], \
@@ -378,18 +378,18 @@ for row in data:
 <span class="o">['Berk',..,68] ['Tim',..,74]
 ['Mark',..,82] ['Amy',..,90]</span></pre>
       <p>ถ้าคัดเฉพาะกุญแจมาเรียง ได้แค่ <code>[68,74,82,90]</code> แถวไม่ย้ายตาม</p>
-    </div>
-    <div class="trap">
-      <h3>กับดัก บรรยาย 4</h3>
-      <ul>
+  </section>
+  <section class="s warn">
+    <h2><span class="n">!</span>กับดัก 4</h2>
+<ul>
         <li>Bubble ลูปในจบที่ <b>1</b> ไม่ใช่ 0 เพราะต้องอ้าง <code>a[j-1]</code></li>
         <li><code>insertionSort</code> และ <code>insertionSortRec</code> <b>ไม่มี return</b></li>
         <li>ทุกฟังก์ชันรับ <code>N</code> ต้องส่ง <code>len(a)</code> ไปด้วยเสมอ</li>
       </ul>
-    </div>
-    <div class="blk" data-ch="5">
-      <h2><span class="badge">บรรยาย 5</span> ฟังก์ชันเรียกตัวเอง <span class="tag">ออกสอบแน่</span></h2>
-      <pre>def message(times):
+  </section>
+  <section class="s">
+    <h2><span class="n">5</span>ฟังก์ชันเรียกตัวเอง<span class="tg">ออกสอบแน่</span></h2>
+<pre>def message(times):
     print("message is called, times = ",
           times)
     if times &gt; 0:
@@ -408,10 +408,10 @@ message return with  1
 message return with  2
 message return with  3</span></pre>
       <p>ขาไปนับ 3→0 · ขากลับนับ 0→3 · <code>message(3)</code> เรียกตัวเอง <b>4 ครั้ง</b></p>
-    </div>
-    <div class="blk" data-ch="5">
-      <h2><span class="badge">บรรยาย 5</span> Divide and Conquer</h2>
-      <ul>
+  </section>
+  <section class="s">
+    <h2><span class="n">5</span>Divide and Conquer</h2>
+<ul>
         <li><b>1. Base Case</b> แก้ตรง ๆ ถ้าเล็กพอ</li>
         <li><b>2. Divide</b> แบ่งเป็นปัญหาย่อยที่เล็กลง</li>
         <li><b>3. Recursively solve</b> เรียกตัวเองแก้ปัญหาย่อย</li>
@@ -423,10 +423,10 @@ message return with  3</span></pre>
 3. Merge-Sort( A, Left, m )
 4. Merge-Sort( A, m + 1, Right )
 5. "Merge" the 2 sorted lists.</pre>
-    </div>
-    <div class="blk" data-ch="5">
-      <h2><span class="badge">บรรยาย 5</span> merge <span class="tag">Θ(n)</span></h2>
-      <pre>def merge(A, p, q, r):
+  </section>
+  <section class="s">
+    <h2><span class="n">5</span>merge<span class="tg">Θ(n)</span></h2>
+<pre>def merge(A, p, q, r):
     left  = A[p: q+1]      <span class="c"># slice = copy</span>
     right = A[q+1: r+1]
     i = 0   <span class="c"># index into left</span>
@@ -447,24 +447,25 @@ message return with  3</span></pre>
         A[k: r+1] = right[j:]
 </pre>
       <p>เขียนผลลง <b>A ตัวเดิม</b> ไม่คืนค่าใหม่ · ครึ่งแรก <code>p..q</code> ครึ่งหลัง <code>q+1..r</code></p>
-    </div>
+  </section>
   </div>
   <div class="foot">
-    <span>618240 · บท 4-7 โค้ดจากเอกสารบรรยาย ผศ.ดร.ยุทธนา เจวจินดา · ทดสอบรันแล้ว</span>
+    <span>บท 4-7 โค้ดจากเอกสารบรรยาย ผศ.ดร.ยุทธนา เจวจินดา · ทดสอบรันแล้วทุกบรรทัด</span>
     <span>หน้า 1 / 2</span>
   </div>
 </section>
 
 <section class="sheet">
   <div class="masthead">
-    <h1>ชีทสอบ · 618240</h1>
+    <span class="code">618240</span>
+    <h1>ชีทสอบข้อเขียน</h1>
     <span class="sub">โครงสร้างข้อมูลและอัลกอริทึม</span>
-    <span class="pg">หน้า 2 / 2 &nbsp;·&nbsp; บรรยาย 5-7 · MERGE · STACK · LINKED LIST</span>
+    <span class="pg">หน้า 2/2 · บรรยาย 5-7</span>
   </div>
-  <div class="col">
-    <div class="blk" data-ch="5">
-      <h2><span class="badge">บรรยาย 5</span> merge_sort <span class="tag">n log n</span></h2>
-      <pre>def merge_sort(A, p=0, r=None):
+  <div class="flow">
+  <section class="s first">
+    <h2><span class="n">5</span>merge_sort<span class="tg">n log n</span></h2>
+<pre>def merge_sort(A, p=0, r=None):
     if r is None:
         r = len(A) - 1
     if p &gt;= r:            <span class="c"># 0 or 1 element</span>
@@ -478,10 +479,10 @@ A = [8, 3, 2, 9, 7, 1, 5, 4]
 merge_sort(A)
 print(A)
 <span class="o">[1, 2, 3, 4, 5, 7, 8, 9]</span></pre>
-    </div>
-    <div class="blk" data-ch="5">
-      <h2><span class="badge">บรรยาย 5</span> Quick Sort</h2>
-      <pre>Quick-Sort(A, left, right)
+  </section>
+  <section class="s">
+    <h2><span class="n">5</span>Quick Sort</h2>
+<pre>Quick-Sort(A, left, right)
   if left &gt;= right
       return
   else
@@ -490,10 +491,10 @@ print(A)
       Quick-Sort(A, middle + 1, right)
   end if</pre>
       <p>เลือก pivot <b>p</b> เช่นตัวแรก · ส่วนแรกคือที่ <b>&lt; p</b> ส่วนที่สองคือ <b>≥ p</b></p>
-    </div>
-    <div class="blk" data-ch="5">
-      <h2><span class="badge">บรรยาย 5</span> Merge vs Quick</h2>
-      <table>
+  </section>
+  <section class="s">
+    <h2><span class="n">5</span>Merge vs Quick</h2>
+<table>
         <tr><th></th><th>Merge</th><th>Quick</th></tr>
         <tr><td>งานหลัก</td><td>ตอน merge</td><td>ตอน partition</td></tr>
         <tr><td>Worst</td><td>O(n log n)</td><td>O(n²)</td></tr>
@@ -501,18 +502,18 @@ print(A)
         <tr><td>Stability</td><td>Stable</td><td>Not stable</td></tr>
       </table>
       <p><b>Stable</b> = ตัวที่ค่าเท่ากันยังคงลำดับเดิม · ทั้งคู่ดีกว่า Insertion Sort</p>
-    </div>
-    <div class="trap">
-      <h3>กับดัก บรรยาย 5</h3>
-      <ul>
+  </section>
+  <section class="s warn">
+    <h2><span class="n">!</span>กับดัก 5</h2>
+<ul>
         <li><code>merge_sort</code> <b>ไม่ return</b> และเรียกครั้งแรกแค่ <code>merge_sort(A)</code> เพราะ p, r มีค่าตั้งต้น</li>
         <li>ครึ่งหลังเริ่มที่ <code>q + 1</code> ไม่ใช่ <code>q</code></li>
         <li><code>print</code> ก่อนเรียกตัวเอง = ขาไป · หลังเรียกตัวเอง = ขากลับ</li>
       </ul>
-    </div>
-    <div class="blk" data-ch="6">
-      <h2><span class="badge">บรรยาย 6</span> คลาสและวัตถุ</h2>
-      <pre>class birds():
+  </section>
+  <section class="s">
+    <h2><span class="n">6</span>คลาสและวัตถุ</h2>
+<pre>class birds():
     name = 'eagle'
     def fly(self):
         if self.name == 'eagle':
@@ -524,10 +525,10 @@ eagle.fly()          <span class="c"># วิธีที่ 1</span>
 birds.fly(eagle)     <span class="c"># วิธีที่ 2</span></pre>
       <p><code>self</code> ต้องเป็นพารามิเตอร์<b>ตัวแรกเสมอ</b> (เหมือน <code>this</code> ใน Java)
       · <b>ADT = properties + operations</b> · <b>class = ตัวแปรของวัตถุ + เมท็อด</b></p>
-    </div>
-    <div class="blk" data-ch="6">
-      <h2><span class="badge">บรรยาย 6</span> Constructor และ __str__</h2>
-      <pre>class rectangle():
+  </section>
+  <section class="s">
+    <h2><span class="n">6</span>Constructor และ __str__</h2>
+<pre>class rectangle():
     def __init__(self, x, y):
         self._x = x
         self._y = y
@@ -543,12 +544,10 @@ r1 = rectangle(2.0, 3.0)
 print(r1);  r1.calArea()
 <span class="o">Width: 2.0 / Height: 3.0 / Area is  6.0</span></pre>
       <p><code>__init__</code> เรียก<b>ครั้งเดียว</b>ตอนสร้างวัตถุ · ตัวแปรปกปิดขึ้นต้นด้วย <code>_</code> · <code>__str__</code> เรียกตอน <code>print</code></p>
-    </div>
-  </div>
-  <div class="col">
-    <div class="blk" data-ch="6">
-      <h2><span class="badge">บรรยาย 6</span> คลาส Stack <span class="tag">FILO</span></h2>
-      <pre>class Stack:
+  </section>
+  <section class="s">
+    <h2><span class="n">6</span>คลาส Stack<span class="tg">FILO</span></h2>
+<pre>class Stack:
     def __init__(self, size):
         self._top = -1
         self._data = [None] * size
@@ -579,10 +578,10 @@ print(r1);  r1.calArea()
             print("Stack is empty")
             return -1</pre>
       <p><b>อย่าลืม</b> <code>push</code> พิมพ์ <code>"Pushed element: "</code> ทุกครั้งที่ใส่สำเร็จ</p>
-    </div>
-    <div class="blk" data-ch="6">
-      <h2><span class="badge">บรรยาย 6</span> ผลการรัน Stack <span class="tag">ออกสอบ</span></h2>
-      <p class="lead"><code>s1 = Stack(3)</code> · push 5, 6, 1, 4 · pop 4 ครั้ง</p>
+  </section>
+  <section class="s">
+    <h2><span class="n">6</span>ผลการรัน Stack<span class="tg">ออกสอบ</span></h2>
+<p class="lead"><code>s1 = Stack(3)</code> · push 5, 6, 1, 4 · pop 4 ครั้ง</p>
       <pre><span class="o">Pushed element:  5
 Pushed element:  6
 Pushed element:  1
@@ -592,10 +591,10 @@ poped:  6
 poped:  5
 Stack is empty</span></pre>
       <p>Stack ขนาด 3 · ค่า 4 ถูกปฏิเสธ · pop ได้ <b>1 → 6 → 5</b> แล้วครั้งที่ 4 ว่างจึงคืน −1</p>
-    </div>
-    <div class="blk" data-ch="6">
-      <h2><span class="badge">บรรยาย 6</span> การประยุกต์ใช้ Stack</h2>
-      <ul>
+  </section>
+  <section class="s">
+    <h2><span class="n">6</span>การประยุกต์ใช้ Stack</h2>
+<ul>
         <li>จดจำย้อนกลับ Backtracking เช่น undo</li>
         <li>ใน compiler ส่งค่าไปยังโปรแกรมย่อย</li>
         <li>คำนวณพจน์คณิตศาสตร์ <code>(1 + 2) * 3</code></li>
@@ -604,10 +603,10 @@ Stack is empty</span></pre>
       <p><b>คำนวณพจน์ ใช้ Stack 2 อัน</b> Operand เก็บตัวเลข / Operator เก็บเครื่องหมาย ·
       เจอ <code>(</code> ไม่ทำอะไร · เจอ <code>)</code> pop เลข 2 ตัวกับเครื่องหมาย 1 ตัว คำนวณแล้ว push กลับ ·
       <code>( (4 + 2 ) * 3 )</code> = <b>18</b></p>
-    </div>
-    <div class="blk" data-ch="7">
-      <h2><span class="badge">บรรยาย 7</span> คลาส Node</h2>
-      <pre>class Node():
+  </section>
+  <section class="s">
+    <h2><span class="n">7</span>คลาส Node</h2>
+<pre>class Node():
     def __init__(self, datum):
         self.data = datum
         self.next = None
@@ -615,12 +614,10 @@ Stack is empty</span></pre>
         return str(self.data)</pre>
       <p>โหนด = <b>ข้อมูล + ตัวชี้ next</b> ตัวท้ายชี้ <code>None</code> ·
       <code>data</code> กับ <code>next</code> ไม่มีขีดล่างนำหน้า คือเป็น public</p>
-    </div>
-  </div>
-  <div class="col">
-    <div class="blk" data-ch="7">
-      <h2><span class="badge">บรรยาย 7</span> LinkedList · การเพิ่มโหนด</h2>
-      <pre>class LinkedList():
+  </section>
+  <section class="s">
+    <h2><span class="n">7</span>LinkedList · การเพิ่มโหนด</h2>
+<pre>class LinkedList():
     def __init__(self):
         self._head = None
         self._tail = None
@@ -642,10 +639,10 @@ Stack is empty</span></pre>
             <b>new_node.next = self._head</b>
             <b>self._head = new_node</b></pre>
       <p>มี <code>_tail</code> เก็บไว้ <code>insertAtTail</code> จึงไม่ต้องไล่ทั้งรายการ</p>
-    </div>
-    <div class="blk" data-ch="7">
-      <h2><span class="badge">บรรยาย 7</span> removeAtHead และ __str__</h2>
-      <pre>    def removeAtHead(self):
+  </section>
+  <section class="s">
+    <h2><span class="n">7</span>removeAtHead และ __str__</h2>
+<pre>    def removeAtHead(self):
         if (self._head != None):
             datum = self._head.data
             self._head = self._head.next
@@ -667,10 +664,10 @@ Stack is empty</span></pre>
 mylist.insertAtTail(["65-1", "Mark"])
 print(mylist)
 <span class="o">node : 1 ['65-1', 'Mark']</span></pre>
-    </div>
-    <div class="blk" data-ch="7">
-      <h2><span class="badge">บรรยาย 7</span> Queue <span class="tag">FIFO</span></h2>
-      <pre>from collections import deque
+  </section>
+  <section class="s">
+    <h2><span class="n">7</span>Queue<span class="tg">FIFO</span></h2>
+<pre>from collections import deque
 
 class Queue:
     def __init__(self):
@@ -687,27 +684,27 @@ class Queue:
     def size(self):  return len(self.items)</pre>
       <p>ใส่หลัง <code>append</code> · ออกหน้า <code>popleft</code>
       · <b>สไลด์เรียก <code>is_empty()</code> แต่ไม่ได้เขียนไว้</b> ต้องเขียนเพิ่มเอง</p>
-    </div>
-    <div class="blk" data-ch="7">
-      <h2><span class="badge">บรรยาย 7</span> Circular และ Doubly</h2>
-      <p class="lead"><b>Circular</b> ท้ายชี้กลับหัว · <b>Doubly</b> มี <code>dummy</code> จำหัว-ท้าย และมี <code>prev</code> เพิ่ม</p>
+  </section>
+  <section class="s">
+    <h2><span class="n">7</span>Circular และ Doubly</h2>
+<p class="lead"><b>Circular</b> ท้ายชี้กลับหัว · <b>Doubly</b> มี <code>dummy</code> จำหัว-ท้าย และมี <code>prev</code> เพิ่ม</p>
       <pre><span class="c"># ใส่ก้อนใหม่ด้านหน้า Doubly</span>
 1. new_node.prev = header
 2. new_node.next = header.next
 3. header.next.prev = new_node
 4. header.next = new_node</pre>
-    </div>
-    <div class="trap">
-      <h3>กับดัก บรรยาย 6-7</h3>
-      <ul>
+  </section>
+  <section class="s warn">
+    <h2><span class="n">!</span>กับดัก 6-7</h2>
+<ul>
         <li><code>insertAtHead</code> ต้อง <code>new_node.next = self._head</code> <b>ก่อน</b> แล้วจึง <code>self._head = new_node</code></li>
         <li>LinkedList ใช้ <code>_head</code> <code>_tail</code> มีขีดล่าง แต่ Node ใช้ <code>data</code> <code>next</code> ไม่มีขีดล่าง</li>
         <li>ไล่รายการใช้ <code>curr</code> เดิน ห้ามเลื่อน <code>self._head</code></li>
       </ul>
-    </div>
+  </section>
   </div>
   <div class="foot">
-    <span>618240 · บท 4-7 โค้ดจากเอกสารบรรยาย ผศ.ดร.ยุทธนา เจวจินดา · ทดสอบรันแล้ว</span>
+    <span>บท 4-7 โค้ดจากเอกสารบรรยาย ผศ.ดร.ยุทธนา เจวจินดา · ทดสอบรันแล้วทุกบรรทัด</span>
     <span>หน้า 2 / 2</span>
   </div>
 </section>
