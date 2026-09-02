@@ -447,6 +447,11 @@ message return with  3</span></pre>
         A[k: r+1] = right[j:]
 </pre>
       <p>เขียนผลลง <b>A ตัวเดิม</b> ไม่คืนค่าใหม่ · ครึ่งแรก <code>p..q</code> ครึ่งหลัง <code>q+1..r</code></p>
+      <p class="lead" style="margin-top:1.4mm;border-top:0.7pt solid var(--red);padding-top:0.9mm">
+      <b>ไล่ Bubble Sort ของอาจารย์ด้วยมือ</b> — <code>a=[5,1,4,2]</code> รอบ <code>i=0</code>
+      ลูป <code>j</code> วิ่ง 3→1 · <code>j=3</code> 2&lt;4 สลับ · <code>j=2</code> 2&lt;1 ไม่ ·
+      <code>j=1</code> 1&lt;5 สลับ → ได้ <code>[1,5,2,4]</code>
+      คือ<b>ค่าน้อยขึ้นหน้า</b> ไม่ใช่ค่ามากไปท้ายแบบตำราทั่วไป</p>
   </section>
   </div>
   <div class="foot">
@@ -700,6 +705,7 @@ class Queue:
         <li><code>insertAtHead</code> ต้อง <code>new_node.next = self._head</code> <b>ก่อน</b> แล้วจึง <code>self._head = new_node</code></li>
         <li>LinkedList ใช้ <code>_head</code> <code>_tail</code> มีขีดล่าง แต่ Node ใช้ <code>data</code> <code>next</code> ไม่มีขีดล่าง</li>
         <li>ไล่รายการใช้ <code>curr</code> เดิน ห้ามเลื่อน <code>self._head</code></li>
+      <li><code>insertionSort</code> <code>merge</code> <code>merge_sort</code> <code>push</code> <code>insertAt*</code> <b>ไม่คืนค่า</b> แก้ของเดิมโดยตรง</li>
       </ul>
   </section>
   </div>
